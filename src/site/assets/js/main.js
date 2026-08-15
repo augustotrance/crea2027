@@ -1,150 +1,237 @@
-document.documentElement.classList.add('js');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const header = document.querySelector('[data-header]');
+const updateHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 48);
+updateHeader();
+window.addEventListener('scroll', updateHeader, { passive: true });
 
-function initHeader() {
-  const header = document.querySelector('[data-header]');
-  const toggle = document.querySelector('[data-nav-toggle]');
-  const nav = document.querySelector('[data-nav]');
-  if (!header) return;
+const navToggle = document.querySelector('[data-nav-toggle]');
+const nav = document.querySelector('[data-nav]');
+const closeNav = () => {
+  if (!nav || !navToggle) return;
+  nav.classList.remove('is-open');
+  navToggle.setAttribute('aria-expanded', 'false');
+  document.body.classList.remove('nav-open');
+};
 
-  const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
-  updateHeader();
-  window.addEventListener('scroll', updateHeader, { passive: true });
+navToggle?.addEventListener('click', () => {
+  const open = nav?.classList.toggle('is-open') ?? false;
+  navToggle.setAttribute('aria-expanded', String(open));
+  document.body.classList.toggle('nav-open', open);
+});
+nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeNav();
+});
 
-  if (!toggle || !nav) return;
-  const closeNavigation = () => {
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.querySelector('.sr-only').textContent = 'Abrir menú';
-    nav.classList.remove('is-open');
-    document.body.classList.remove('nav-open');
-  };
-
-  toggle.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') !== 'true';
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.querySelector('.sr-only').textContent = open ? 'Cerrar menú' : 'Abrir menú';
-    nav.classList.toggle('is-open', open);
-    document.body.classList.toggle('nav-open', open);
-  });
-
-  nav.addEventListener('click', (event) => {
-    if (event.target.closest('a')) closeNavigation();
-  });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeNavigation();
-  });
-}
-
-function initHeroVideo() {
-  const video = document.querySelector('[data-hero-video]');
-  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  const canLoad = video
-    && window.matchMedia('(min-width: 48rem)').matches
-    && !reducedMotion.matches
-    && !connection?.saveData;
-
-  if (!canLoad) return;
-  for (const source of video.querySelectorAll('source[data-src]')) {
-    source.src = source.dataset.src;
-  }
-  video.load();
-  video.play().catch(() => {
-    // El póster conserva una portada completa si el navegador bloquea la reproducción.
-  });
-}
-
-function initReveals() {
-  const elements = [...document.querySelectorAll('[data-reveal]')];
-  if (!elements.length || reducedMotion.matches || !('IntersectionObserver' in window)) {
-    elements.forEach((element) => element.classList.add('is-visible'));
-    return;
-  }
-  const observer = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
+const revealItems = document.querySelectorAll('[data-reveal]');
+if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+  revealItems.forEach((item) => item.classList.add('is-visible'));
+} else {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
       entry.target.classList.add('is-visible');
       observer.unobserve(entry.target);
-    }
-  }, { rootMargin: '0px 0px -8% 0px', threshold: .12 });
-  elements.forEach((element) => observer.observe(element));
-}
-
-function initFilters() {
-  const filterRoot = document.querySelector('[data-filters]');
-  const grid = document.querySelector('[data-project-grid]');
-  const status = document.querySelector('[data-filter-status]');
-  if (!filterRoot || !grid) return;
-
-  const cards = [...grid.querySelectorAll('[data-category]')];
-  filterRoot.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-filter]');
-    if (!button) return;
-    const selected = button.dataset.filter;
-    for (const option of filterRoot.querySelectorAll('[data-filter]')) {
-      const active = option === button;
-      option.classList.toggle('is-active', active);
-      option.setAttribute('aria-pressed', String(active));
-    }
-
-    let visible = 0;
-    cards.forEach((card) => {
-      const categories = card.dataset.category.split(' ');
-      const matches = selected === 'all' || categories.includes(selected);
-      card.hidden = !matches;
-      if (matches) visible += 1;
     });
-    if (status) status.textContent = `${visible} ${visible === 1 ? 'proyecto visible' : 'proyectos visibles'}.`;
-  });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px' });
+  revealItems.forEach((item) => revealObserver.observe(item));
 }
 
-function initContactForm() {
-  const form = document.querySelector('[data-contact-form]');
-  if (!form) return;
-  const message = form.querySelector('#message');
-  const count = form.querySelector('[data-message-count]');
-  const status = form.querySelector('[data-form-status]');
-  const button = form.querySelector('button[type="submit"]');
+const video = document.querySelector('[data-hero-video]');
+const videoToggle = document.querySelector('[data-video-toggle]');
+const videoLabel = videoToggle?.querySelector('[data-video-label]');
+const videoIcon = videoToggle?.querySelector('[data-video-icon]');
 
-  message?.addEventListener('input', () => {
-    if (count) count.textContent = String(message.value.length);
-  });
+const setVideoState = (paused) => {
+  if (!videoToggle || !videoLabel || !videoIcon) return;
+  videoToggle.setAttribute('aria-pressed', String(paused));
+  videoToggle.setAttribute('aria-label', paused ? 'Reproducir video de portada' : 'Pausar video de portada');
+  videoLabel.textContent = paused ? 'Reproducir' : 'Pausar';
+  videoIcon.textContent = paused ? '▶' : 'Ⅱ';
+};
 
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    if (!form.reportValidity()) return;
-    button.disabled = true;
-    button.setAttribute('aria-busy', 'true');
-    status.textContent = 'Enviando…';
-
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { Accept: 'application/json' }
-      });
-      if (!response.ok) throw new Error('Respuesta no válida');
-      form.reset();
-      if (count) count.textContent = '0';
-      status.textContent = 'Gracias. La consulta fue enviada correctamente.';
-    } catch {
-      status.innerHTML = 'No pudimos enviar el formulario. Escribinos a <a href="mailto:estudiodcrea@gmail.com">estudiodcrea@gmail.com</a>.';
-    } finally {
-      button.disabled = false;
-      button.removeAttribute('aria-busy');
-    }
-  });
+if (video) {
+  if (prefersReducedMotion) {
+    video.pause();
+    setVideoState(true);
+  } else {
+    video.play().catch(() => setVideoState(true));
+  }
 }
 
-function setCurrentYear() {
-  document.querySelectorAll('[data-year]').forEach((element) => {
-    element.textContent = String(new Date().getFullYear());
-  });
-}
+videoToggle?.addEventListener('click', async () => {
+  if (!video) return;
+  if (video.paused) {
+    try { await video.play(); } catch { return; }
+  } else {
+    video.pause();
+  }
+  setVideoState(video.paused);
+});
 
-initHeader();
-initHeroVideo();
-initReveals();
-initFilters();
-initContactForm();
-setCurrentYear();
+const projects = {
+  'beauty-premium': {
+    category: 'Branding · Social · Web', title: 'Marca Premium · Beauty', subtitle: 'Reposicionamiento de marca de belleza como opción premium en su sector', client: 'Beauty Studio Premium', sector: 'Beauty & Wellness', services: 'Branding, Social Media, Web Design', year: '2025',
+    challenge: 'El cliente necesitaba diferenciarse de la competencia local y justificar precios premium sin perder clientes actuales. La percepción de marca era genérica y no transmitía el nivel de servicio que ofrecían.',
+    solution: 'Desarrollamos un sistema de identidad visual sofisticado con paleta neutra y acentos dorados, fotografía editorial de alta calidad y una experiencia web tipo revista de lujo. Rediseñamos la comunicación en redes sociales con templates de marca y una estrategia de contenidos premium.',
+    results: ['+40% engagement en 90 días', '0 → 12k seguidores orgánicos', 'Aumento de ticket promedio 35%', 'Retención de 90% de clientes existentes'],
+    hero: { src: 'assets/images/portfolio/beauty/hero.png', width: 1024, height: 892 },
+    gallery: [
+      { src: 'assets/images/portfolio/beauty/beauty_1.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/beauty/beauty_2.png', width: 371, height: 371 }, { src: 'assets/images/portfolio/beauty/beauty_3.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/beauty/beauty_4.png', width: 371, height: 371 }
+    ], route: 'casos/beauty-premium/'
+  },
+  'restaurant-fb': {
+    category: 'Branding · Art Direction', title: 'Restaurant Group · F&B', subtitle: 'Dirección de arte y sistema visual para grupo gastronómico', client: 'Grupo Gastronómico del Sur', sector: 'Food & Beverage', services: 'Art Direction, Menu Design, Food Photography', year: '2024',
+    challenge: 'Grupo con tres locales sin identidad unificada, menús físicos desactualizados y fotografía amateur de platos. Necesitaban modernizar sin perder esencia.',
+    solution: 'Construimos una dirección de arte coherente, un sistema de menú contemporáneo y una narrativa fotográfica de alto contraste capaz de unificar los puntos de contacto sin borrar la personalidad de cada local.',
+    results: ['Menú fotográfico tipo revista', '+50% reservas vía web', 'Cobertura en medios gastronómicos', 'Incremento 25% ticket promedio'],
+    hero: { src: 'assets/images/portfolio/restaurant/hero.jpg', width: 1536, height: 1024 },
+    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/restaurant/gallery-0${number}.jpg`, width: 1536, height: 1024 })), route: 'casos/restaurant-editorial/'
+  },
+  'fashion-lifestyle': {
+    category: 'Social Media Ecosystem', title: 'Fashion Brand · Lifestyle', subtitle: 'Ecosistema de contenido para marca de moda sustentable', client: 'Verde Moda Consciente', sector: 'Fashion & Lifestyle', services: 'Social Media Strategy, Content Design, Photography Direction', year: '2024',
+    challenge: 'Marca con producto diferenciado pero sin una presencia digital fuerte, con un feed genérico que no reflejaba sus valores de sustentabilidad.',
+    solution: 'Creamos un feed editorial de lujo, fotografía lifestyle cuidada, templates para narrar cada prenda y una guía completa para sostener la dirección de arte.',
+    results: ['Feed tipo editorial de lujo', '+28% CTR en Instagram', '3.5% engagement rate sostenido', '+40% ventas por Instagram en 3 meses'],
+    hero: { src: 'assets/images/portfolio/fashion/hero.png', width: 1184, height: 864 },
+    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/fashion/fashion_${number}.png`, width: 508, height: 371 })), route: 'casos/fashion-lifestyle/'
+  },
+  'educacion-elearning': {
+    category: 'Branding · Social · Web', title: 'Educación · E-learning', subtitle: 'Rebranding completo de plataforma educativa online', client: 'Academia Digital Pro', sector: 'Educación Online', services: 'Branding Systems, Web Design, Social Media', year: '2024',
+    challenge: 'Plataforma educativa con una marca amateur que no justificaba precios altos. Competía en un mercado saturado sin una diferenciación clara.',
+    solution: 'Desarrollamos una identidad premium, rediseñamos la experiencia de la plataforma y construimos una estrategia de contenidos orientada a posicionarla como referente.',
+    results: ['Posicionamiento premium en el sector', '+200% inscripciones orgánicas', 'Precio del curso aumentado 60%', 'Tasa de finalización +25%'],
+    hero: { src: 'assets/images/portfolio/education/hero.png', width: 1054, height: 1024 },
+    gallery: [{ src: 'assets/images/portfolio/education/edu_1.png', width: 1205, height: 880 }, { src: 'assets/images/portfolio/education/edu_2.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_3.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_4.png', width: 1136, height: 899 }, { src: 'assets/images/portfolio/education/edu_5.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_6.png', width: 938, height: 912 }], route: 'casos/educacion-elearning/'
+  },
+  'derito-legal': {
+    category: 'Branding · Web Experience', title: 'Derito Legal · Estudio jurídico', subtitle: 'Identidad y web para estudio jurídico', client: 'Derito Legal', sector: 'Estudio jurídico', services: 'Branding, UI/UX, Web Development', year: '2023',
+    challenge: 'El estudio no tenía una identidad visual clara y necesitaba transmitir confiabilidad y modernidad para captar clientes.',
+    solution: 'Diseñamos un sistema de marca minimalista, una experiencia web con microinteracciones y una narrativa orientada a beneficios de negocio.',
+    results: ['+120% conversión en landing', 'Reducción 45% bounce rate', 'Sistema visual unificado', 'Cierre con clientes Serie A'],
+    hero: { src: 'assets/images/portfolio/derito/hero.png', width: 1200, height: 896 },
+    gallery: [{ src: 'assets/images/portfolio/derito/derito_1.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/derito/derito_2.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/derito/derito_3.png', width: 508, height: 371 }, { src: 'assets/images/portfolio/derito/derito_4.png', width: 508, height: 371 }, { src: 'assets/images/portfolio/derito/derito_5.png', width: 508, height: 371 }], route: 'casos/derito-legal/'
+  },
+  'alquilerdeautos-hertz': {
+    category: 'Web · Social · Content', title: 'Alquiler de autos · Hertz', subtitle: 'Ecosistema digital para empresa de alquiler de autos', client: 'Hertz', sector: 'Alquiler de autos', services: 'Web Development, Social Content, Piezas gráficas', year: '2019',
+    challenge: 'El proyecto requería una presencia web clara y una base visual consistente para posicionar la empresa en buscadores y ordenar su comunicación.',
+    solution: 'Desarrollamos la experiencia web y un sistema de piezas para folletería, videos publicitarios y contenidos en redes sociales.',
+    results: ['Modernización de la marca', '+85% tiempo en sitio', '15% leads cualificados adicionales', 'Reducción 60% tiempo de cierre'],
+    hero: { src: 'assets/images/portfolio/hertz/hero.png', width: 1255, height: 848 },
+    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/hertz/hertz_${number}.png`, width: 600, height: 371 })), route: 'casos/hertz-mobility/'
+  }
+};
+
+const projectOrder = Object.keys(projects);
+const modal = document.querySelector('#project-modal');
+let activeProjectIndex = 0;
+
+const setText = (selector, value) => {
+  const element = modal?.querySelector(selector);
+  if (element) element.textContent = value;
+};
+
+const renderProject = (projectId) => {
+  if (!modal || !projects[projectId]) return;
+  const project = projects[projectId];
+  activeProjectIndex = projectOrder.indexOf(projectId);
+  setText('#modal-category', project.category);
+  setText('#modal-title', project.title);
+  setText('#modal-subtitle', project.subtitle);
+  setText('#modal-client', project.client);
+  setText('#modal-sector', project.sector);
+  setText('#modal-services', project.services);
+  setText('#modal-year', project.year);
+  setText('#modal-challenge', project.challenge);
+  setText('#modal-solution', project.solution);
+
+  const hero = modal.querySelector('#modal-hero');
+  hero.src = project.hero.src;
+  hero.width = project.hero.width;
+  hero.height = project.hero.height;
+  hero.alt = project.title;
+
+  const results = modal.querySelector('#modal-results');
+  results.replaceChildren(...project.results.map((result) => {
+    const item = document.createElement('li');
+    item.textContent = result;
+    return item;
+  }));
+
+  const gallery = modal.querySelector('#modal-gallery');
+  gallery.replaceChildren(...project.gallery.map((image, index) => {
+    const figure = document.createElement('figure');
+    figure.className = 'gallery-item';
+    const img = document.createElement('img');
+    img.src = image.src;
+    img.width = image.width;
+    img.height = image.height;
+    img.loading = 'lazy';
+    img.alt = `${project.title}, imagen ${index + 1}`;
+    figure.append(img);
+    return figure;
+  }));
+
+  const caseLink = modal.querySelector('#modal-case-link');
+  caseLink.href = project.route;
+  const previous = modal.querySelector('[data-project-prev]');
+  const next = modal.querySelector('[data-project-next]');
+  previous.disabled = activeProjectIndex === 0;
+  next.disabled = activeProjectIndex === projectOrder.length - 1;
+  modal.scrollTop = 0;
+};
+
+document.querySelectorAll('[data-project]').forEach((trigger) => {
+  trigger.addEventListener('click', () => {
+    renderProject(trigger.dataset.project);
+    if (!modal?.open) modal?.showModal();
+    document.body.classList.add('modal-open');
+  });
+});
+
+const closeModal = () => {
+  modal?.close();
+  document.body.classList.remove('modal-open');
+};
+modal?.querySelector('[data-modal-close]')?.addEventListener('click', closeModal);
+modal?.addEventListener('click', (event) => {
+  if (event.target === modal) closeModal();
+});
+modal?.addEventListener('close', () => document.body.classList.remove('modal-open'));
+modal?.querySelector('[data-project-prev]')?.addEventListener('click', () => renderProject(projectOrder[activeProjectIndex - 1]));
+modal?.querySelector('[data-project-next]')?.addEventListener('click', () => renderProject(projectOrder[activeProjectIndex + 1]));
+document.addEventListener('keydown', (event) => {
+  if (!modal?.open) return;
+  if (event.key === 'ArrowLeft' && activeProjectIndex > 0) renderProject(projectOrder[activeProjectIndex - 1]);
+  if (event.key === 'ArrowRight' && activeProjectIndex < projectOrder.length - 1) renderProject(projectOrder[activeProjectIndex + 1]);
+});
+
+const contactForm = document.querySelector('[data-contact-form]');
+contactForm?.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const button = contactForm.querySelector('button[type="submit"]');
+  const status = contactForm.querySelector('[data-form-status]');
+  const defaultLabel = button.textContent;
+  button.disabled = true;
+  button.textContent = 'Enviando…';
+  status.textContent = '';
+  status.className = 'form-status';
+  try {
+    const response = await fetch(contactForm.action, { method: 'POST', body: new FormData(contactForm), headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error('No se pudo enviar');
+    contactForm.reset();
+    status.textContent = 'Proyecto enviado. Gracias por escribirnos.';
+    status.classList.add('is-success');
+    button.textContent = 'Proyecto enviado';
+  } catch {
+    status.textContent = 'No pudimos enviarlo. Podés escribir a estudiodcrea@gmail.com.';
+    status.classList.add('is-error');
+    button.textContent = 'Reintentar';
+  } finally {
+    button.disabled = false;
+    window.setTimeout(() => { button.textContent = defaultLabel; }, 3500);
+  }
+});
+
+document.querySelectorAll('[data-year]').forEach((year) => { year.textContent = new Date().getFullYear(); });

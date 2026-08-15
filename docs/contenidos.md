@@ -11,7 +11,7 @@ Cada caso debe incluir:
 - título y descripción únicos;
 - categoría y áreas de trabajo verificables;
 - un resumen breve;
-- problema o idea, sin inventar resultados;
+- problema o idea y resultados que ya estén documentados o expresamente validados;
 - imagen de portada y galería con texto alternativo;
 - enlace al siguiente caso.
 
@@ -19,4 +19,4 @@ Para agregar uno, copiar la estructura de una carpeta existente, cambiar el cont
 
 ## Datos sensibles o inciertos
 
-No publicar cifras, nombres de responsables, dirección completa, clientes, premios, testimonios o vínculos sociales sin validación expresa. Si un dato no está confirmado, dejarlo fuera del sitio y registrarlo como pendiente en una incidencia.
+Las cifras y nombres conservados actualmente proceden del sitio original de CREA y deben considerarse contenido heredado, no evidencia independiente. No agregar nuevas cifras, nombres de responsables, direcciones, clientes, premios, testimonios o vínculos sociales sin validación expresa. Si un dato nuevo no está confirmado, dejarlo fuera del sitio y registrarlo como pendiente.

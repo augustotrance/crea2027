@@ -1,14 +1,14 @@
 {
   "name": "CREA Design Studio",
   "short_name": "CREA",
-  "description": "Estrategia, identidad y experiencias digitales.",
+  "description": "Branding, social media y web para marcas que quieren elevar su categoría.",
   "lang": "es-AR",
   "start_url": "/crea2027/",
   "scope": "/crea2027/",
   "display": "standalone",
-  "background_color": "#f3f0e9",
-  "theme_color": "#111114",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
   "icons": [
-    { "src": "assets/images/brand/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    { "src": "assets/images/brand/logo-crea.png", "sizes": "1421x946", "type": "image/png", "purpose": "any" }
   ]
 }

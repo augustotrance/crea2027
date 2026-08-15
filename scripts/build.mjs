@@ -11,7 +11,7 @@ await mkdir(output, { recursive: true });
 await cp(source, output, { recursive: true });
 
 const index = await readFile(resolve(output, 'index.html'), 'utf8');
-if (!index.includes('CREA Design Studio') || !index.includes('id="contacto"')) {
+if (!index.includes('CREA Design Studio') || !index.includes('id="contacto"') || !index.includes('crea-services-hero.mp4')) {
   throw new Error('La compilación no contiene la portada o el formulario esperados.');
 }
 

@@ -3,301 +3,107 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111114">
-  <meta name="description" content="CREA Design Studio desarrolla identidades, experiencias digitales y comunicación visual con estrategia, oficio y una mirada contemporánea.">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="description" content="Estudio boutique de branding, social media y web para marcas que quieren cobrar más y no competir por precio.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://augustotrance.github.io/crea2027/">
-  <link rel="icon" href="assets/images/brand/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/images/brand/logo-crea.png" type="image/png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preload" href="assets/images/brand/hero-poster.webp" as="image" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/images/brand/hero-poster.jpg" as="image" type="image/jpeg">
   <link rel="stylesheet" href="assets/css/styles.css">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_AR">
-  <meta property="og:title" content="CREA Design Studio — Ideas claras. Formas memorables.">
-  <meta property="og:description" content="Estrategia, identidad y experiencias digitales diseñadas para conectar.">
+  <meta property="og:title" content="CREA Design Studio — Legados visuales">
+  <meta property="og:description" content="Branding, social media y web para marcas que quieren elevar su categoría.">
   <meta property="og:url" content="https://augustotrance.github.io/crea2027/">
-  <meta property="og:image" content="https://augustotrance.github.io/crea2027/assets/images/brand/hero-poster.webp">
+  <meta property="og:image" content="https://augustotrance.github.io/crea2027/assets/images/brand/hero-poster.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <title>CREA Design Studio — Estrategia, identidad y diseño digital</title>
+  <title>CREA Design Studio — Legados visuales</title>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "CREA Design Studio",
       "url": "https://augustotrance.github.io/crea2027/",
-      "image": "https://augustotrance.github.io/crea2027/assets/images/brand/hero-poster.webp",
+      "image": "https://augustotrance.github.io/crea2027/assets/images/brand/logo-crea.png",
       "email": "estudiodcrea@gmail.com",
-      "description": "Estudio de diseño especializado en estrategia, identidad visual y experiencias digitales.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Haedo",
-        "addressCountry": "AR"
-      },
-      "areaServed": "AR"
+      "description": "Estudio boutique de branding, social media y web."
     }
   </script>
 </head>
-<body>
+<body id="top">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <div class="grid-overlay" aria-hidden="true"></div>
 
   <header class="site-header" data-header>
-    <div class="shell header-inner">
-      <a class="brand" href="#inicio" aria-label="CREA Design Studio, inicio">
-        <img src="assets/images/brand/crea-symbol.webp" width="64" height="64" alt="" aria-hidden="true">
-        <span>CREA <small>Design Studio</small></span>
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="CREA Design Studio, inicio">
+        <img src="assets/images/brand/logo-crea.png" width="84" height="56" alt="">
+        <span class="logo-text">CREA Design Studio</span>
       </a>
-
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-nav-toggle>
         <span class="sr-only">Abrir menú</span>
-        <span aria-hidden="true"></span><span aria-hidden="true"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
-
-      <nav class="site-nav" id="site-nav" aria-label="Navegación principal" data-nav>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#estudio">Estudio</a>
-        <a class="nav-contact" href="#contacto">Hablemos <span aria-hidden="true">↗</span></a>
+      <nav class="main-nav" id="main-nav" aria-label="Navegación principal" data-nav>
+        <a href="#laboratorio">Laboratorio</a><a href="#portfolio">Portfolio</a><a href="#services">Servicios</a><a href="#about">Nosotros</a><a class="nav-cta" href="#contacto">Contacto</a>
       </nav>
     </div>
   </header>
 
   <main id="contenido">
-    <section class="hero" id="inicio" aria-labelledby="hero-title">
-      <div class="hero-media" aria-hidden="true">
-        <video muted loop playsinline preload="none" poster="assets/images/brand/hero-poster.webp" data-hero-video>
-          <source data-src="assets/video/hero-studio.mp4" type="video/mp4">
-        </video>
-        <div class="hero-wash"></div>
-      </div>
-      <div class="shell hero-content">
-        <p class="eyebrow" data-reveal>Diseño estratégico · Haedo, Argentina</p>
-        <h1 id="hero-title" data-reveal>Ideas claras.<br><span>Formas memorables.</span></h1>
-        <div class="hero-bottom" data-reveal>
-          <p>Transformamos preguntas complejas en marcas, sistemas y experiencias que se entienden y se sienten.</p>
-          <a class="circle-link" href="#proyectos" aria-label="Explorar proyectos">
-            <span>Ver<br>proyectos</span><span aria-hidden="true">↓</span>
-          </a>
-        </div>
-      </div>
-      <p class="hero-index" aria-hidden="true">CREA / 2027</p>
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/images/brand/hero-poster.jpg" aria-hidden="true" data-hero-video><source src="assets/video/crea-services-hero.mp4" type="video/mp4"></video>
+      <div class="hero-video-overlay" aria-hidden="true"></div>
+      <div class="container"><div class="hero-content">
+        <div class="hero-text-content"><span class="hero-badge fade-in">Estudio Boutique</span><h1 class="fade-in-up" id="hero-title">No solo diseñamos,<br>creamos legados visuales.</h1><p class="fade-in-up delay-1">Estudio boutique de branding, social media y web para marcas que quieren cobrar más y no competir por precio.</p><div class="hero-ctas fade-in-up delay-2"><a class="btn btn-primary" href="#contacto">Agendar llamada</a><a class="btn btn-ghost" href="#portfolio">Ver proyectos</a></div></div>
+        <div class="hero-stats fade-in-up delay-3" aria-label="Datos del estudio"><div class="stat"><span class="stat-number">50+</span><span class="stat-label">Proyectos</span></div><div class="stat"><span class="stat-number">12</span><span class="stat-label">Sectores</span></div><div class="stat"><span class="stat-number">85%</span><span class="stat-label">Recurrencia</span></div></div>
+      </div></div>
+      <button class="video-toggle" type="button" aria-label="Pausar video de portada" aria-pressed="false" data-video-toggle><span aria-hidden="true" data-video-icon>Ⅱ</span><span data-video-label>Pausar</span></button>
     </section>
 
-    <section class="intro section" aria-labelledby="intro-title">
-      <div class="shell intro-grid">
-        <p class="section-kicker">01 · Enfoque</p>
-        <div>
-          <h2 class="display-copy" id="intro-title" data-reveal>Diseñamos para hacer visible lo que una marca <em>tiene de único.</em></h2>
-          <div class="intro-notes" data-reveal>
-            <p>Combinamos pensamiento estratégico y precisión visual para construir soluciones claras, flexibles y duraderas.</p>
-            <p>Cada proyecto parte de escuchar, ordenar y encontrar una idea capaz de sostener todo el sistema.</p>
-          </div>
-        </div>
+    <section class="section" id="laboratorio" aria-labelledby="laboratorio-title"><div class="container">
+      <header class="section-header"><span class="section-eyebrow">Proceso</span><h2 id="laboratorio-title">Laboratorio</h2><p>De boceto a sistema visual completo. Nuestro proceso transforma ideas en marcas que generan impacto medible.</p></header>
+      <div class="lab-steps"><article class="lab-step" data-reveal><span class="step-number">01</span><h3>Exploramos el territorio visual</h3><p>Investigación profunda de sector, competencia y referencias para encontrar el lenguaje único de la marca.</p></article><article class="lab-step" data-reveal><span class="step-number">02</span><h3>Tensionamos la marca</h3><p>Exploraciones de múltiples rutas visuales y conceptuales hasta encontrar la que genera mayor diferenciación.</p></article><article class="lab-step" data-reveal><span class="step-number">03</span><h3>Diseñamos sistemas, no solo logos</h3><p>Identidad aplicable a todos los puntos de contacto: social, web, packaging y piezas clave de comunicación.</p></article><article class="lab-step" data-reveal><span class="step-number">04</span><h3>Activamos la marca</h3><p>Lanzamiento estratégico en social media y ecosistema digital con plan de contenidos inicial incluido.</p></article></div>
+    </div></section>
+
+    <section class="section section-dark" id="portfolio" aria-labelledby="portfolio-title"><div class="container">
+      <header class="section-header"><span class="section-eyebrow">Casos</span><h2 id="portfolio-title">Proyectos que hablan<br>con números</h2><p>Cada proyecto es un caso de negocio, no solo un trabajo estético.</p></header>
+      <div class="portfolio-grid">
+        <article class="portfolio-card portfolio-card--pink" data-reveal><button class="portfolio-trigger" type="button" data-project="beauty-premium"><span class="portfolio-image portfolio-image--contain"><img src="assets/images/portfolio/beauty/hero.png" width="1024" height="892" loading="lazy" alt="Sistema visual de la marca Beauty Premium"></span><span class="portfolio-meta"><strong>Marca Premium · Beauty</strong><span class="portfolio-tag">Branding · Social · Web</span><span class="portfolio-metrics"><span><b>+40% engagement</b> en 90 días</span><span><b>0 → 12k</b> seguidores orgánicos</span><span><b>+35%</b> ticket promedio</span></span></span></button></article>
+        <article class="portfolio-card portfolio-card--orange" data-reveal><button class="portfolio-trigger" type="button" data-project="restaurant-fb"><span class="portfolio-image"><img src="assets/images/portfolio/restaurant/hero.jpg" width="1536" height="1024" loading="lazy" alt="Entrada de un restaurante contemporáneo con dirección de arte oscura y magenta"></span><span class="portfolio-meta"><strong>Restaurant Group · F&amp;B</strong><span class="portfolio-tag">Branding · Art Direction</span><span class="portfolio-metrics"><span><b>+50%</b> reservas vía web</span><span><b>+25%</b> ticket promedio</span><span><b>Cobertura</b> en medios</span></span></span></button></article>
+        <article class="portfolio-card portfolio-card--purple" data-reveal><button class="portfolio-trigger" type="button" data-project="fashion-lifestyle"><span class="portfolio-image"><img src="assets/images/portfolio/fashion/hero.png" width="1184" height="864" loading="lazy" alt="Ecosistema visual editorial para una marca de moda"></span><span class="portfolio-meta"><strong>Fashion Brand · Lifestyle</strong><span class="portfolio-tag">Social Media Ecosystem</span><span class="portfolio-metrics"><span><b>Feed editorial</b> de lujo</span><span><b>+28%</b> CTR en Instagram</span><span><b>3.5%</b> engagement sostenido</span></span></span></button></article>
+        <article class="portfolio-card portfolio-card--green" data-reveal><button class="portfolio-trigger" type="button" data-project="educacion-elearning"><span class="portfolio-image portfolio-image--contain"><img src="assets/images/portfolio/education/hero.png" width="1054" height="1024" loading="lazy" alt="Sistema de identidad para una plataforma de educación en línea"></span><span class="portfolio-meta"><strong>Educación · E-learning</strong><span class="portfolio-tag">Branding · Social · Web</span><span class="portfolio-metrics"><span><b>+200%</b> inscripciones orgánicas</span><span><b>+60%</b> precio de curso</span><span><b>+25%</b> finalización</span></span></span></button></article>
+        <article class="portfolio-card portfolio-card--blue" data-reveal><button class="portfolio-trigger" type="button" data-project="derito-legal"><span class="portfolio-image portfolio-image--contain"><img src="assets/images/portfolio/derito/hero.png" width="1200" height="896" loading="lazy" alt="Identidad y experiencia digital de Derito Legal"></span><span class="portfolio-meta"><strong>Derito Legal · Estudio jurídico</strong><span class="portfolio-tag">Branding · Web Experience</span><span class="portfolio-metrics"><span><b>+120%</b> conversión en landing</span><span><b>-45%</b> bounce rate</span><span><b>Cierre con clientes</b> Serie A</span></span></span></button></article>
+        <article class="portfolio-card portfolio-card--cyan" data-reveal><button class="portfolio-trigger" type="button" data-project="alquilerdeautos-hertz"><span class="portfolio-image portfolio-image--contain"><img src="assets/images/portfolio/hertz/hero.png" width="1255" height="848" loading="lazy" alt="Sistema web y de comunicación desarrollado para Hertz"></span><span class="portfolio-meta"><strong>Alquiler de autos · Hertz</strong><span class="portfolio-tag">Web · Social · Content</span><span class="portfolio-metrics"><span><b>+85%</b> tiempo en sitio</span><span><b>+15%</b> leads cualificados</span><span><b>-60%</b> tiempo de cierre</span></span></span></button></article>
       </div>
-    </section>
+    </div></section>
 
-    <section class="work section" id="proyectos" aria-labelledby="work-title">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">02 · Trabajo seleccionado</p>
-            <h2 id="work-title">Casos que toman forma</h2>
-          </div>
-          <p>Una selección de sistemas de identidad, plataformas y campañas desarrolladas para contextos diferentes.</p>
-        </div>
-
-        <div class="filters" aria-label="Filtrar proyectos" data-filters>
-          <button type="button" class="is-active" data-filter="all" aria-pressed="true">Todos</button>
-          <button type="button" data-filter="identidad" aria-pressed="false">Identidad</button>
-          <button type="button" data-filter="digital" aria-pressed="false">Digital</button>
-          <button type="button" data-filter="comunicacion" aria-pressed="false">Comunicación</button>
-        </div>
-        <p class="sr-only" aria-live="polite" data-filter-status></p>
-
-        <div class="project-grid" data-project-grid>
-          <article class="project-card project-card--wide" data-category="digital identidad" data-reveal>
-            <a href="casos/beauty-premium/">
-              <div class="project-image">
-                <img src="assets/images/portfolio/beauty-web.webp" width="600" height="371" loading="lazy" alt="Sitio de comercio electrónico de una marca de belleza premium">
-                <span class="project-open" aria-hidden="true">↗</span>
-              </div>
-              <div class="project-meta"><div><h3>Beauty Premium</h3><p>Identidad · Experiencia digital</p></div><span>01</span></div>
-            </a>
-          </article>
-
-          <article class="project-card project-card--tall" data-category="identidad comunicacion" data-reveal>
-            <a href="casos/restaurant-editorial/">
-              <div class="project-image">
-                <img src="assets/images/portfolio/restaurant-space.webp" width="1536" height="1024" loading="lazy" alt="Interior de un restaurante contemporáneo de atmósfera íntima">
-                <span class="project-open" aria-hidden="true">↗</span>
-              </div>
-              <div class="project-meta"><div><h3>Restaurant Editorial</h3><p>Concepto · Sistema visual</p></div><span>02</span></div>
-            </a>
-          </article>
-
-          <article class="project-card" data-category="identidad comunicacion" data-reveal>
-            <a href="casos/fashion-lifestyle/">
-              <div class="project-image">
-                <img src="assets/images/portfolio/fashion-editorial.webp" width="508" height="371" loading="lazy" alt="Sistema editorial de una marca de indumentaria lifestyle">
-                <span class="project-open" aria-hidden="true">↗</span>
-              </div>
-              <div class="project-meta"><div><h3>Fashion Lifestyle</h3><p>Marca · Dirección de arte</p></div><span>03</span></div>
-            </a>
-          </article>
-
-          <article class="project-card" data-category="digital comunicacion" data-reveal>
-            <a href="casos/educacion-elearning/">
-              <div class="project-image">
-                <img src="assets/images/portfolio/education-campaign.webp" width="1205" height="880" loading="lazy" alt="Pieza de campaña para una propuesta de educación en línea">
-                <span class="project-open" aria-hidden="true">↗</span>
-              </div>
-              <div class="project-meta"><div><h3>Educación E-learning</h3><p>Campaña · Ecosistema digital</p></div><span>04</span></div>
-            </a>
-          </article>
-
-          <article class="project-card project-card--wide" data-category="identidad digital" data-reveal>
-            <a href="casos/derito-legal/">
-              <div class="project-image">
-                <img src="assets/images/portfolio/legal-digital.webp" width="600" height="371" loading="lazy" alt="Sitio institucional de Derito Legal en una computadora portátil">
-                <span class="project-open" aria-hidden="true">↗</span>
-              </div>
-              <div class="project-meta"><div><h3>Derito Legal</h3><p>Identidad · Sitio institucional</p></div><span>05</span></div>
-            </a>
-          </article>
-
-          <article class="project-card" data-category="digital comunicacion" data-reveal>
-            <a href="casos/hertz-mobility/">
-              <div class="project-image">
-                <img src="assets/images/portfolio/mobility-campaign.webp" width="1255" height="848" loading="lazy" alt="Campaña urbana de movilidad para Hertz">
-                <span class="project-open" aria-hidden="true">↗</span>
-              </div>
-              <div class="project-meta"><div><h3>Hertz Mobility</h3><p>Campaña · Contenido digital</p></div><span>06</span></div>
-            </a>
-          </article>
-        </div>
+    <section class="section" id="services" aria-labelledby="services-title"><div class="container">
+      <header class="section-header"><span class="section-eyebrow">Servicios</span><h2 id="services-title">Sistemas visuales para marcas<br>que juegan en serio</h2></header>
+      <div class="services-grid">
+        <article class="service-card service-card--pink" data-reveal><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg></span><h3>Branding Systems</h3><p>Manual de marca que no se queda en un PDF olvidado. Sistema visual completo aplicable a todos los puntos de contacto de tu negocio.</p><ul><li>Identidad visual completa</li><li>Manual de aplicación</li><li>Templates editables</li><li>Librería de assets</li></ul></article>
+        <article class="service-card service-card--blue" data-reveal><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="m16 3-4 4-4-4"/></svg></span><h3>Social Media Ecosystems</h3><p>Feeds que parecen editoriales, no catálogos. Diseño de contenido para Instagram, LinkedIn y TikTok.</p><ul><li>Estrategia de contenidos</li><li>Grillas y templates</li><li>Guía de uso para el equipo</li></ul></article>
+        <article class="service-card service-card--green" data-reveal><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></span><h3>Web Experiences</h3><p>Sitios que parecen trailer, no brochure. Desarrollo de experiencias responsivas con animaciones fluidas.</p><ul><li>Diseño UI/UX premium</li><li>Desarrollo web</li><li>Optimización performance &amp; SEO</li></ul></article>
+        <article class="service-card service-card--purple" data-reveal><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></span><h3>Art Direction On Demand</h3><p>Dirección de arte senior para campañas, lanzamientos y sesiones, sin contratar equipo in-house.</p><ul><li>Concepto creativo</li><li>Dirección de sesiones</li><li>Supervisión de piezas clave</li></ul></article>
+        <article class="service-card service-card--cyan" data-reveal><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><circle cx="8" cy="7" r="1" fill="currentColor"/><circle cx="8" cy="17" r="1" fill="currentColor"/></svg></span><h3>Hosting &amp; Infraestructura</h3><p>Infraestructura pensada para marcas que no pueden caerse. Hosting gestionado y entornos listos para escalar.</p><ul><li>Configuración de dominio y DNS</li><li>Hosting optimizado</li><li>SSL, backups y monitoreo básico</li></ul></article>
+        <article class="service-card service-card--orange" data-reveal><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9zM4 14l4-4"/></svg></span><h3>Diseño Gráfico</h3><p>Soporte gráfico para tu día a día: piezas puntuales alineadas al sistema visual de tu marca.</p><ul><li>Material publicitario y piezas digitales</li><li>Presentaciones y documentos clave</li><li>Material para lanzamientos y campañas</li></ul></article>
       </div>
-    </section>
+    </div></section>
 
-    <section class="services section" id="servicios" aria-labelledby="services-title">
-      <div class="shell">
-        <div class="section-heading section-heading--light">
-          <div>
-            <p class="section-kicker">03 · Capacidades</p>
-            <h2 id="services-title">De la idea al sistema</h2>
-          </div>
-          <p>Armamos equipos y alcances a medida: desde una intervención puntual hasta una construcción integral de marca.</p>
-        </div>
+    <section class="section section-dark" id="about" aria-labelledby="about-title"><div class="container about-block"><span class="section-eyebrow">Filosofía</span><h2 id="about-title">Nosotros</h2><p class="about-intro">Somos un estudio boutique que combina estrategia, diseño y contenido para marcas que quieren jugar en ligas mayores. Trabajamos cerca de founders, equipos y marcas que entienden que el diseño es una palanca de negocio, no decoración.</p><div class="manifesto-text"><p class="manifesto-line" data-reveal>Creemos en marcas que se toman la estética tan en serio como sus números.</p><p class="manifesto-line" data-reveal>No trabajamos con cualquiera: buscamos marcas que quieran elevar su categoría.</p><p class="manifesto-line" data-reveal>El diseño es inversión estratégica, no gasto decorativo.</p></div></div></section>
 
-        <div class="service-list">
-          <article data-reveal><span>01</span><h3>Estrategia de marca</h3><p>Posicionamiento, arquitectura, narrativa, tono y criterios para decidir con coherencia.</p></article>
-          <article data-reveal><span>02</span><h3>Identidad visual</h3><p>Sistemas gráficos, logotipos, tipografía, color, dirección de arte y guías de uso.</p></article>
-          <article data-reveal><span>03</span><h3>Diseño digital</h3><p>Sitios web responsivos, interfaces, prototipos y experiencias pensadas para personas reales.</p></article>
-          <article data-reveal><span>04</span><h3>Comunicación</h3><p>Campañas, contenido, piezas editoriales y herramientas que activan la identidad en el tiempo.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="process section" aria-labelledby="process-title">
-      <div class="shell process-grid">
-        <div>
-          <p class="section-kicker">04 · Método</p>
-          <h2 id="process-title">Un proceso abierto.<br>Un rumbo preciso.</h2>
-        </div>
-        <ol class="process-list">
-          <li data-reveal><span>01</span><div><h3>Entender</h3><p>Escuchamos el contexto, las necesidades y las tensiones que el proyecto tiene que resolver.</p></div></li>
-          <li data-reveal><span>02</span><div><h3>Definir</h3><p>Construimos una idea rectora y acordamos criterios antes de multiplicar soluciones.</p></div></li>
-          <li data-reveal><span>03</span><div><h3>Diseñar</h3><p>Convertimos la estrategia en un lenguaje claro, singular y preparado para crecer.</p></div></li>
-          <li data-reveal><span>04</span><div><h3>Activar</h3><p>Producimos, documentamos y acompañamos la implementación en cada punto de contacto.</p></div></li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="studio section" id="estudio" aria-labelledby="studio-title">
-      <div class="shell studio-grid">
-        <div class="studio-mark" aria-hidden="true">
-          <img src="assets/images/brand/crea-symbol.webp" width="600" height="600" loading="lazy" alt="">
-        </div>
-        <div class="studio-copy">
-          <p class="section-kicker">05 · Estudio</p>
-          <h2 id="studio-title" data-reveal>Curiosidad para descubrir.<br><em>Criterio para elegir.</em></h2>
-          <p>CREA es un estudio de diseño que trabaja entre la estrategia y la expresión. Nos interesa construir relaciones cercanas, procesos honestos y resultados que no dependan de una tendencia para tener sentido.</p>
-          <p>Desde Haedo colaboramos con proyectos y organizaciones que valoran las buenas preguntas tanto como las buenas formas.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="contact section" id="contacto" aria-labelledby="contact-title">
-      <div class="shell contact-grid">
-        <div class="contact-intro">
-          <p class="section-kicker">06 · Contacto</p>
-          <h2 id="contact-title">¿Qué podemos<br><em>crear juntos?</em></h2>
-          <p>Contanos en qué estás trabajando. Respondemos por correo para acordar objetivos, alcance y próximos pasos.</p>
-          <a href="mailto:estudiodcrea@gmail.com">estudiodcrea@gmail.com <span aria-hidden="true">↗</span></a>
-        </div>
-
-        <form class="contact-form" action="https://formspree.io/f/xeeeazkq" method="post" data-contact-form>
-          <div class="form-row">
-            <label for="name">Nombre</label>
-            <input id="name" name="name" type="text" autocomplete="name" required>
-          </div>
-          <div class="form-row">
-            <label for="email">Correo electrónico</label>
-            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required>
-          </div>
-          <div class="form-row">
-            <label for="organization">Marca u organización <span>(opcional)</span></label>
-            <input id="organization" name="organization" type="text" autocomplete="organization">
-          </div>
-          <div class="form-row">
-            <label for="service">¿En qué podemos ayudar?</label>
-            <select id="service" name="service" required>
-              <option value="" selected disabled>Elegí una opción</option>
-              <option>Estrategia de marca</option>
-              <option>Identidad visual</option>
-              <option>Diseño digital</option>
-              <option>Comunicación</option>
-              <option>Proyecto integral</option>
-              <option>Otra consulta</option>
-            </select>
-          </div>
-          <div class="form-row form-row--full">
-            <label for="message">Sobre el proyecto</label>
-            <textarea id="message" name="message" rows="5" minlength="20" maxlength="2000" placeholder="Contexto, objetivo, tiempos o cualquier dato útil…" required></textarea>
-            <small><span data-message-count>0</span>/2000</small>
-          </div>
-          <div class="honey" aria-hidden="true">
-            <label for="website">No completar este campo</label>
-            <input id="website" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
-          </div>
-          <label class="consent">
-            <input type="checkbox" name="privacy" value="accepted" required>
-            <span>Acepto que CREA use estos datos para responder mi consulta, según la <a href="privacidad/">política de privacidad</a>.</span>
-          </label>
-          <input type="hidden" name="_subject" value="Nueva consulta desde CREA Design Studio">
-          <div class="form-actions">
-            <button class="button button--primary" type="submit">Enviar consulta <span aria-hidden="true">↗</span></button>
-            <p class="form-status" role="status" aria-live="polite" data-form-status></p>
-          </div>
-        </form>
-      </div>
-    </section>
+    <section class="section section-cta" id="contacto" aria-labelledby="contact-title"><div class="container cta-block"><h2 id="contact-title">¿Listo para el próximo<br>salto visual?</h2><p>Cuéntanos en una frase qué quieres lograr. El resto es nuestra parte.</p>
+      <form class="contact-form" action="https://formspree.io/f/xeeeazkq" method="post" data-contact-form><div class="form-grid"><div class="form-row"><label for="name">Nombre</label><input type="text" id="name" name="name" autocomplete="name" placeholder="Tu nombre completo" required></div><div class="form-row"><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="tu@email.com" required></div><div class="form-row"><label for="current-site">Instagram / Web actual <span>(opcional)</span></label><input type="text" id="current-site" name="current-site" autocomplete="url" placeholder="@tuinstagram o www.tusitio.com"></div><div class="form-row"><label for="budget">Presupuesto estimado</label><select id="budget" name="budget" required><option value="" selected disabled>Selecciona una opción</option><option value="exploring">Estoy explorando opciones</option><option value="ready">Lista para invertir seriamente</option><option value="partner">Busco una alianza estratégica</option><option value="founder">Soy emprendedor</option><option value="startup-scale">Tengo una startup en crecimiento</option></select></div></div><div class="form-row"><label for="message">¿Qué quieres lograr con tu marca?</label><textarea id="message" name="message" rows="5" placeholder="Ej.: posicionar mi marca como opción premium en mi sector" required></textarea></div><label class="privacy-check" for="privacy"><input id="privacy" name="privacy" type="checkbox" value="accepted" required><span>Leí y acepto la <a href="privacidad/">política de privacidad</a>.</span></label><p class="form-status" role="status" aria-live="polite" data-form-status></p><button class="btn btn-primary btn-full" type="submit">Enviar proyecto</button></form>
+    </div></section>
   </main>
 
-  <footer class="site-footer">
-    <div class="shell footer-grid">
-      <div>
-        <a class="brand brand--footer" href="#inicio" aria-label="CREA Design Studio, volver al inicio">
-          <img src="assets/images/brand/crea-symbol.webp" width="64" height="64" alt="" aria-hidden="true">
-          <span>CREA <small>Design Studio</small></span>
-        </a>
-        <p>Diseño estratégico, identidad y experiencias digitales.</p>
-      </div>
-      <div><p class="footer-title">Navegación</p><a href="#proyectos">Proyectos</a><a href="#servicios">Servicios</a><a href="#estudio">Estudio</a></div>
-      <div><p class="footer-title">Contacto</p><a href="mailto:estudiodcrea@gmail.com">Correo</a><span>Haedo · Argentina</span></div>
-      <div><p class="footer-title">Legal</p><a href="privacidad/">Privacidad</a><a href="terminos/">Términos</a></div>
-    </div>
-    <div class="shell footer-bottom"><span>© <span data-year>2026</span> CREA Design Studio</span><a href="#inicio">Volver arriba ↑</a></div>
-  </footer>
+  <footer class="site-footer"><div class="container"><div class="footer-content"><div class="footer-col footer-brand"><div class="footer-logo-wrapper"><img src="assets/images/brand/logo-crea.png" width="30" height="20" alt=""><span>CREA Design Studio</span></div><p>Estudio boutique de branding,<br>social media y web.</p></div><div class="footer-col"><h2>Servicios</h2><nav class="footer-nav" aria-label="Servicios"><a href="#services">Branding Systems</a><a href="#services">Social Media Ecosystems</a><a href="#services">Web Experiences</a><a href="#services">Art Direction On Demand</a><a href="#services">Hosting &amp; Infraestructura</a><a href="#services">Diseño Gráfico</a></nav></div><div class="footer-col"><h2>Estudio</h2><nav class="footer-nav" aria-label="Estudio"><a href="#portfolio">Portfolio</a><a href="#laboratorio">Proceso</a><a href="#about">Nosotros</a><a href="#contacto">Contacto</a></nav></div><div class="footer-col"><h2>Conectá</h2><nav class="footer-nav" aria-label="Contacto"><a href="https://wa.me/5491151553302" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="mailto:estudiodcrea@gmail.com">Email</a></nav></div><div class="footer-col footer-careers"><h2>Sumate al equipo</h2><p>¿Sos diseñador, developer o creativo? Enviános tu portfolio y contanos por qué te gustaría sumarte a nuestro equipo.</p><a class="btn btn-ghost btn-small" href="mailto:estudiodcrea@gmail.com?subject=Quiero%20trabajar%20en%20CREA%20Design%20Studio">Enviar correo</a></div></div><div class="footer-bottom"><p>© <span data-year>2026</span> CREA Design Studio. Todos los derechos reservados.</p><nav class="footer-legal" aria-label="Información legal"><a href="privacidad/">Privacidad</a><span aria-hidden="true">·</span><a href="terminos/">Términos</a></nav><a href="#top">Volver arriba</a></div></div></footer>
 
+  <dialog class="project-modal" id="project-modal" aria-labelledby="modal-title"><div class="modal-shell"><button class="modal-close" type="button" aria-label="Cerrar proyecto" data-modal-close><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><div class="modal-body"><header class="project-header"><span class="project-category" id="modal-category"></span><h2 class="project-title" id="modal-title"></h2><p class="project-subtitle" id="modal-subtitle"></p></header><figure class="project-hero"><img id="modal-hero" src="assets/images/brand/hero-poster.jpg" width="1920" height="1080" alt=""></figure><dl class="project-details"><div><dt>Cliente</dt><dd id="modal-client"></dd></div><div><dt>Sector</dt><dd id="modal-sector"></dd></div><div><dt>Servicios</dt><dd id="modal-services"></dd></div><div><dt>Año</dt><dd id="modal-year"></dd></div></dl><section class="project-description"><h3>El desafío</h3><p id="modal-challenge"></p><h3>La solución</h3><p id="modal-solution"></p><h3>Resultados</h3><ul class="modal-results" id="modal-results"></ul></section><section class="project-gallery" aria-labelledby="gallery-title"><h3 id="gallery-title">Galería</h3><div class="gallery-grid" id="modal-gallery"></div></section><a class="btn btn-primary modal-case-link" id="modal-case-link" href="casos/beauty-premium/">Ver caso completo</a><div class="project-navigation"><button type="button" data-project-prev>← Proyecto anterior</button><button type="button" data-project-next>Siguiente proyecto →</button></div></div></div></dialog>
   <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>

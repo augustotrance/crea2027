@@ -12,7 +12,7 @@
 - Abrir portada, los seis casos, privacidad, términos y una ruta inexistente.
 - Probar navegación con teclado y menú móvil.
 - Revisar consola y pestaña de red.
-- Confirmar que el video no cargue con ahorro de datos o movimiento reducido.
+- Confirmar que el video recorra la secuencia completa; con movimiento reducido debe mostrarse el poster.
 - Enviar una consulta de prueba solamente con autorización del responsable del formulario.
 - Validar `sitemap.xml` y `robots.txt`.
 

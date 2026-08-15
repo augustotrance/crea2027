@@ -59,9 +59,15 @@ for (const file of htmlFiles) {
 for (const file of files) {
   const size = (await stat(file)).size;
   const label = relative(site, file);
-  if (/\.(?:png|jpe?g|webp|avif)$/i.test(file) && size > 500_000) errors.push(`${label}: imagen mayor a 500 KB.`);
-  if (/\.mp4$/i.test(file) && size > 3_000_000) errors.push(`${label}: video mayor a 3 MB.`);
+  // La versión 2.0 conserva los originales de portfolio en su calidad máxima.
+  // El límite evita archivos accidentales, no fuerza una recompresión destructiva.
+  if (/\.(?:png|jpe?g|webp|avif)$/i.test(file) && size > 4_000_000) errors.push(`${label}: imagen mayor a 4 MB.`);
+  if (/\.mp4$/i.test(file) && size > 30_000_000) errors.push(`${label}: video mayor a 30 MB.`);
 }
+
+const fullHero = resolve(site, 'assets/video/crea-services-hero.mp4');
+const fullHeroSize = (await stat(fullHero)).size;
+if (fullHeroSize < 20_000_000) errors.push('El video de portada parece recortado o recomprimido: debe conservarse el original completo.');
 
 if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));

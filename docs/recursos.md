@@ -2,19 +2,19 @@
 
 ## Convención de nombres
 
-`<caso>-<aplicacion>.webp`, siempre en minúsculas y con guiones. Las imágenes de marca viven en `assets/images/brand/`; las de casos, en `assets/images/portfolio/`.
+Cada caso tiene una carpeta propia en `assets/images/portfolio/<caso>/`. La portada se llama `hero.png`; la galería conserva nombres estables y numerados. Los recursos de identidad viven en `assets/images/brand/` y el video en `assets/video/`.
 
 ## Procedencia
 
-- `crea-symbol.webp` y las imágenes de Beauty, Fashion, Educación, Derito y Hertz fueron recuperadas del sitio público anterior de CREA y optimizadas para esta versión. El repositorio anterior no fue modificado.
-- `restaurant-space.webp` y `restaurant-system.webp` se generaron específicamente para completar el caso gastronómico conceptual: una escena de interior y un sistema de mesa/editorial, ambos con atmósfera oscura y acentos magenta y lima.
-- `hero-studio.mp4` es una versión breve, sin audio y optimizada del video de portada anterior. `hero-poster.webp` funciona como alternativa estática.
+- `logo-crea.png`, los casos Beauty, Fashion, Educación, Derito y Hertz y `crea-services-hero.mp4` son copias exactas de los recursos públicos del proyecto anterior. `estudiocrea` no fue modificado.
+- Los seis JPG del caso Restaurante referenciados por el sitio anterior no existen en la publicación original. Se reconstruyeron seis imágenes de 1536 × 1024 con una misma dirección de arte: carbón, piedra, luz cálida y acentos magenta.
+- `hero-poster.jpg` se extrajo del propio video completo y funciona como respaldo estático.
 
 ## Criterios técnicos
 
-- WebP con metadatos eliminados.
-- Dimensiones suficientes para el uso real, sin ampliaciones innecesarias.
-- Video H.264, 1280 × 720, 24 fps, reproducción silenciosa y carga condicional.
+- PNG original sin reducción de resolución para el portfolio recuperado.
+- Imágenes generadas del caso Restaurante en JPEG 4:4:4, calidad 96 y 1536 × 1024.
+- Video original de 60,07 segundos, 1920 × 1080 y 23.997.460 bytes; reproducción silenciosa, `preload="metadata"` y control de pausa.
 - Todas las imágenes de contenido deben declarar texto alternativo y dimensiones.
 
 Antes de incorporar material nuevo, verificar derechos de uso y conservar el archivo fuente fuera de `dist/` si necesita edición futura.
