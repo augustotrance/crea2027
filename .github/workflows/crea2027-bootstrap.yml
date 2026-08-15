@@ -3,7 +3,7 @@ name: Preparar proyecto CREA 2027
 on:
   push:
     branches: [main]
-    paths: [crea2027-bootstrap.zip]
+    paths: [crea2027-bootstrap.part-06]
 
 permissions:
   contents: write
@@ -16,8 +16,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Incorporar el proyecto validado
         run: |
-          unzip -o crea2027-bootstrap.zip
-          rm crea2027-bootstrap.zip
+          cat crea2027-bootstrap.part-* | base64 --decode > /tmp/crea2027-bootstrap.zip
+          unzip -o /tmp/crea2027-bootstrap.zip
+          rm crea2027-bootstrap.part-*
           rm .github/workflows/crea2027-bootstrap.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
