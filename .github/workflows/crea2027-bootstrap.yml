@@ -1,0 +1,26 @@
+name: Preparar proyecto CREA 2027
+
+on:
+  push:
+    branches: [main]
+    paths: [crea2027-bootstrap.zip]
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Incorporar el proyecto validado
+        run: |
+          unzip -o crea2027-bootstrap.zip
+          rm crea2027-bootstrap.zip
+          rm .github/workflows/crea2027-bootstrap.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: publica sitio CREA Design Studio 2.0"
+          git push
