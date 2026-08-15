@@ -1,0 +1,16 @@
+{
+  "name": "crea2027",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Sitio institucional y portfolio de CREA Design Studio.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "dev": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

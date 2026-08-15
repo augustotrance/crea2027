@@ -1,0 +1,22 @@
+name: Reportar un problema
+description: Informar un error visual, técnico o de contenido.
+title: "[Problema]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+      description: ¿Qué ocurrió y qué esperabas ver?
+    validations:
+      required: true
+  - type: input
+    id: route
+    attributes:
+      label: Página o dirección
+      placeholder: https://augustotrance.github.io/crea2027/
+  - type: input
+    id: environment
+    attributes:
+      label: Dispositivo y navegador
+      placeholder: iPhone 15 / Safari 18
