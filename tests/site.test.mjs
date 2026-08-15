@@ -62,3 +62,19 @@ test('las galerías preservan las proporciones naturales', async () => {
   assert.match(css, /\.case-gallery img[^}]*height:\s*auto/s);
   assert.match(css, /\.project-hero img[^}]*object-fit:\s*contain/s);
 });
+
+test('las correcciones solicitadas permanecen activas en escritorio y móvil', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
+  const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
+  const manifest = await readFile(resolve(root, 'site.webmanifest'), 'utf8');
+  assert.match(css, /\.portfolio-grid[^}]*repeat\(3,/s);
+  assert.match(css, /@media \(max-width: 1024px\)[\s\S]*?\.portfolio-grid[^}]*repeat\(2,/);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.portfolio-grid[^}]*1fr/);
+  assert.match(css, /\.portfolio-image img[^}]*object-fit:\s*cover/s);
+  assert.doesNotMatch(html, /portfolio-image--contain/);
+  assert.match(css, /select option[^}]*background:\s*#0a0a0f[^}]*color:\s*#fafafa/s);
+  assert.match(js, /custom-cursor-enabled/);
+  assert.match(js, /animateStat/);
+  assert.match(manifest, /"sizes": "1024x1024"/);
+});

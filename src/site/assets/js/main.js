@@ -1,5 +1,25 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+const supportsCustomCursor = window.matchMedia('(pointer: fine) and (hover: hover)').matches;
+if (supportsCustomCursor) {
+  document.documentElement.classList.add('custom-cursor-enabled');
+  const cursor = document.createElement('div');
+  cursor.className = 'custom-cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  document.body.append(cursor);
+
+  const interactiveSelector = 'a, button, .portfolio-card, .service-card, input, select, textarea';
+  document.addEventListener('pointermove', (event) => {
+    cursor.style.left = `${event.clientX - 10}px`;
+    cursor.style.top = `${event.clientY - 10}px`;
+    cursor.classList.add('is-visible');
+    const hoveredElement = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
+    cursor.classList.toggle('is-hovering', Boolean(hoveredElement));
+  }, { passive: true });
+  document.documentElement.addEventListener('mouseleave', () => cursor.classList.remove('is-visible'));
+  window.addEventListener('blur', () => cursor.classList.remove('is-visible'));
+}
+
 const header = document.querySelector('[data-header]');
 const updateHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 48);
 updateHeader();
@@ -36,6 +56,41 @@ if (prefersReducedMotion || !('IntersectionObserver' in window)) {
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -50px' });
   revealItems.forEach((item) => revealObserver.observe(item));
+}
+
+const heroStats = document.querySelector('.hero-stats');
+const statNumbers = heroStats ? [...heroStats.querySelectorAll('.stat-number')] : [];
+
+const animateStat = (element, target, suffix, duration = 1500) => {
+  const startedAt = performance.now();
+  const update = (time) => {
+    const progress = Math.min((time - startedAt) / duration, 1);
+    const eased = 1 - ((1 - progress) ** 3);
+    element.textContent = `${Math.floor(target * eased)}${suffix}`;
+    if (progress < 1) requestAnimationFrame(update);
+    else element.textContent = `${target}${suffix}`;
+  };
+  requestAnimationFrame(update);
+};
+
+if (heroStats && statNumbers.length && !prefersReducedMotion) {
+  const values = statNumbers.map((element) => {
+    const value = element.textContent.trim();
+    return { element, target: Number.parseInt(value.replace(/\D/g, ''), 10), suffix: value.replace(/[0-9]/g, '') };
+  });
+  values.forEach(({ element, suffix }) => { element.textContent = `0${suffix}`; });
+
+  const playStats = () => values.forEach(({ element, target, suffix }) => animateStat(element, target, suffix));
+  if ('IntersectionObserver' in window) {
+    const statsObserver = new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      playStats();
+      observer.disconnect();
+    }, { threshold: 0.5 });
+    statsObserver.observe(heroStats);
+  } else {
+    playStats();
+  }
 }
 
 const video = document.querySelector('[data-hero-video]');
