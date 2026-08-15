@@ -1,0 +1,53 @@
+name: CREA publication bridge
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Reconstruct and apply verified site
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat crea2027-publish-35cce37.b64-00 crea2027-publish-35cce37.b64-01 crea2027-publish-35cce37.b64-02 crea2027-publish-35cce37.b64-03 crea2027-publish-35cce37.b64-04 crea2027-publish-35cce37.b64-05 crea2027-publish-35cce37.b64-06 crea2027-publish-35cce37.b64-07 crea2027-publish-35cce37.b64-08 crea2027-publish-35cce37.b64-09 crea2027-publish-35cce37.b64-10 crea2027-publish-35cce37.b64-11 crea2027-publish-35cce37.b64-12 crea2027-publish-35cce37.b64-13 crea2027-publish-35cce37.b64-14 crea2027-publish-35cce37.b64-15 crea2027-publish-35cce37.b64-16 crea2027-publish-35cce37.b64-17 crea2027-publish-35cce37.b64-18 crea2027-publish-35cce37.b64-19 | base64 --decode > /tmp/crea2027-publicacion.zip
+          echo "d88702fe01bef6996afc27103e0b13fc44cb31f09644d930ecf3267be62dfc93  /tmp/crea2027-publicacion.zip" | sha256sum --check
+          unzip -oq /tmp/crea2027-publicacion.zip -d .
+          mkdir -p src/site/assets/images/brand src/site/assets/video src/site/assets/images/portfolio/beauty src/site/assets/images/portfolio/derito src/site/assets/images/portfolio/education src/site/assets/images/portfolio/fashion src/site/assets/images/portfolio/hertz
+          base=https://augustotrance.github.io/estudiocrea
+          curl -fsSL --retry 3 "$base/imagenes/logo_crea.png" -o src/site/assets/images/brand/logo-crea.png
+          curl -fsSL --retry 3 "$base/video_portada.mp4" -o src/site/assets/video/crea-services-hero.mp4
+          curl -fsSL --retry 3 "$base/imagenes/portfolio/logo_beauty.png" -o src/site/assets/images/portfolio/beauty/hero.png
+          for i in 1 2 3 4; do curl -fsSL --retry 3 "$base/imagenes/portfolio/beauty_$i.png" -o "src/site/assets/images/portfolio/beauty/beauty_$i.png"; done
+          curl -fsSL --retry 3 "$base/imagenes/portfolio/logo_derito.png" -o src/site/assets/images/portfolio/derito/hero.png
+          for i in 1 2 3 4 5; do curl -fsSL --retry 3 "$base/imagenes/portfolio/derito_$i.png" -o "src/site/assets/images/portfolio/derito/derito_$i.png"; done
+          curl -fsSL --retry 3 "$base/imagenes/portfolio/elearning.png" -o src/site/assets/images/portfolio/education/hero.png
+          for i in 1 2 3 4 5 6; do curl -fsSL --retry 3 "$base/imagenes/portfolio/edu_$i.png" -o "src/site/assets/images/portfolio/education/edu_$i.png"; done
+          curl -fsSL --retry 3 "$base/imagenes/portfolio/lifestyle.png" -o src/site/assets/images/portfolio/fashion/hero.png
+          for i in 1 2 3 4 5; do curl -fsSL --retry 3 "$base/imagenes/portfolio/fashion_$i.png" -o "src/site/assets/images/portfolio/fashion/fashion_$i.png"; done
+          curl -fsSL --retry 3 "$base/imagenes/portfolio/logo_hertz.png" -o src/site/assets/images/portfolio/hertz/hero.png
+          for i in 1 2 3 4 5; do curl -fsSL --retry 3 "$base/imagenes/portfolio/hertz_$i.png" -o "src/site/assets/images/portfolio/hertz/hertz_$i.png"; done
+          test "$(stat -c%s src/site/assets/video/crea-services-hero.mp4)" -eq 23997460
+          test "$(stat -c%s src/site/assets/images/brand/logo-crea.png)" -eq 109383
+          git rm -f --ignore-unmatch crea2027-publish-35cce37.b64-00 crea2027-publish-35cce37.b64-01 crea2027-publish-35cce37.b64-02 crea2027-publish-35cce37.b64-03 crea2027-publish-35cce37.b64-04 crea2027-publish-35cce37.b64-05 crea2027-publish-35cce37.b64-06 crea2027-publish-35cce37.b64-07 crea2027-publish-35cce37.b64-08 crea2027-publish-35cce37.b64-09 crea2027-publish-35cce37.b64-10 crea2027-publish-35cce37.b64-11 crea2027-publish-35cce37.b64-12 crea2027-publish-35cce37.b64-13 crea2027-publish-35cce37.b64-14 crea2027-publish-35cce37.b64-15 crea2027-publish-35cce37.b64-16 crea2027-publish-35cce37.b64-17 crea2027-publish-35cce37.b64-18 crea2027-publish-35cce37.b64-19
+          git rm -f --ignore-unmatch src/site/assets/images/brand/crea-symbol.webp src/site/assets/images/brand/favicon.svg src/site/assets/images/brand/hero-poster.webp src/site/assets/images/portfolio/beauty-identity.webp src/site/assets/images/portfolio/beauty-social.webp src/site/assets/images/portfolio/beauty-web.webp src/site/assets/images/portfolio/education-campaign.webp src/site/assets/images/portfolio/education-identity.webp src/site/assets/images/portfolio/education-learning.webp src/site/assets/images/portfolio/fashion-editorial.webp src/site/assets/images/portfolio/fashion-packaging.webp src/site/assets/images/portfolio/fashion-retail.webp src/site/assets/images/portfolio/legal-digital.webp src/site/assets/images/portfolio/legal-space.webp src/site/assets/images/portfolio/legal-stationery.webp src/site/assets/images/portfolio/mobility-campaign.webp src/site/assets/images/portfolio/mobility-social.webp src/site/assets/images/portfolio/mobility-web.webp src/site/assets/images/portfolio/restaurant-space.webp src/site/assets/images/portfolio/restaurant-system.webp src/site/assets/video/hero-studio.mp4
+          npm ci
+          node scripts/check.mjs
+          node --test tests/*.test.mjs
+          node scripts/build.mjs
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "fix: restore CREA visual identity and original assets"
+          git push origin HEAD:main
