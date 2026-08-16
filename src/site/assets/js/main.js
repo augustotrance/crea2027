@@ -53,6 +53,25 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') closeNav();
 });
 
+const sponsorsStrip = document.querySelector('[data-sponsors-strip]');
+const mobileSponsors = window.matchMedia('(max-width: 768px)');
+const syncSponsorLoop = () => {
+  if (!sponsorsStrip) return;
+  sponsorsStrip.querySelectorAll('[data-sponsor-clone]').forEach((clone) => clone.remove());
+  if (!mobileSponsors.matches || prefersReducedMotion) return;
+
+  [...sponsorsStrip.children].forEach((logo) => {
+    const clone = logo.cloneNode(true);
+    clone.dataset.sponsorClone = '';
+    clone.setAttribute('aria-hidden', 'true');
+    const image = clone.querySelector('img');
+    if (image) image.alt = '';
+    sponsorsStrip.append(clone);
+  });
+};
+syncSponsorLoop();
+mobileSponsors.addEventListener?.('change', syncSponsorLoop);
+
 const revealItems = document.querySelectorAll('[data-reveal]');
 if (prefersReducedMotion || !('IntersectionObserver' in window)) {
   revealItems.forEach((item) => item.classList.add('is-visible'));
@@ -234,6 +253,7 @@ const renderProject = (projectId) => {
   }));
 
   const gallery = modal.querySelector('#modal-gallery');
+  gallery.classList.toggle('gallery-grid--aligned', ['educacion-elearning', 'derito-legal'].includes(projectId));
   gallery.replaceChildren(...project.gallery.map((image, index) => {
     const figure = document.createElement('figure');
     figure.className = 'gallery-item';

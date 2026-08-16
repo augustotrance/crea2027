@@ -65,19 +65,24 @@ test('las galerías preservan las proporciones naturales', async () => {
   assert.doesNotMatch(css, /\.(?:project-hero|case-cover) img[^}]*max-height/s);
 });
 
-test('las seis galerías usan un mosaico fluido sin filas desiguales', async () => {
+test('las galerías conservan proporciones y alinean e-learning y Derito por filas', async () => {
   const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
+  const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
   assert.match(css, /\.gallery-grid[^}]*columns:\s*2/s);
   assert.match(css, /\.gallery-item[^}]*break-inside:\s*avoid/s);
   assert.match(css, /\.case-gallery[^}]*columns:\s*2/s);
   assert.match(css, /\.case-gallery figure[^}]*break-inside:\s*avoid/s);
+  assert.match(css, /\.gallery-grid--aligned[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(2,/s);
+  assert.match(css, /\.case-gallery--aligned[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(2,/s);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.gallery-grid[^}]*columns:\s*1/);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.case-gallery[^}]*columns:\s*1/);
-  assert.doesNotMatch(css, /\.(?:gallery-grid|case-gallery)[^{]*\{[^}]*grid-template-columns/s);
+  assert.match(js, /\['educacion-elearning', 'derito-legal'\][^\n]*includes\(projectId\)/);
 
   for (const route of routes.filter((route) => route.startsWith('casos/'))) {
     const html = await readFile(resolve(root, route), 'utf8');
-    assert.equal((html.match(/class="case-gallery"/g) ?? []).length, 1, route);
+    const aligned = route.includes('educacion-elearning') || route.includes('derito-legal');
+    assert.equal((html.match(/class="case-gallery(?: case-gallery--aligned)?"/g) ?? []).length, 1, route);
+    assert.equal(html.includes('case-gallery--aligned'), aligned, route);
     assert.ok((html.match(/<figure>/g) ?? []).length >= 4, route);
   }
 });
@@ -108,28 +113,33 @@ test('el cursor, el menú móvil y la navegación secundaria son consistentes', 
     const html = await readFile(resolve(root, route), 'utf8');
     assert.match(html, /data-nav-toggle/);
     assert.match(html, /data-nav/);
-    for (const section of ['hero', 'services', 'laboratorio', 'about', 'portfolio', 'sponsors', 'contacto']) {
+    for (const section of ['services', 'laboratorio', 'about', 'portfolio', 'contacto']) {
       assert.ok(html.includes(`href="../#${section}"`), `${route}: ${section}`);
     }
+    assert.doesNotMatch(html, /href="\.\.\/#(?:hero|sponsors)"/);
+    assert.match(html, /href="\.\.\/#contacto">Contacto</);
   }
 });
 
 test('la portada y la navegación respetan el nuevo orden institucional', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
-  const order = ['hero', 'services', 'laboratorio', 'about', 'portfolio', 'sponsors', 'contacto'];
+  const order = ['hero', 'services', 'laboratorio', 'about', 'portfolio', 'sponsors', 'acompanamiento', 'contacto'];
   const sectionPositions = order.map((id) => html.indexOf(`id="${id}"`));
   assert.ok(sectionPositions.every((position) => position >= 0));
   assert.deepEqual([...sectionPositions].sort((a, b) => a - b), sectionPositions);
 
   const navigation = html.match(/<nav class="main-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
-  const navigationPositions = order.map((id) => navigation.indexOf(`href="#${id}"`));
+  const navigationOrder = ['services', 'laboratorio', 'about', 'portfolio', 'contacto'];
+  const navigationPositions = navigationOrder.map((id) => navigation.indexOf(`href="#${id}"`));
   assert.ok(navigationPositions.every((position) => position >= 0));
   assert.deepEqual([...navigationPositions].sort((a, b) => a - b), navigationPositions);
-  assert.match(navigation, />Estudio boutique<.*>Servicios<.*>Proceso<.*>Filosofía<.*>Casos<.*>Sponsors<.*>Formulario</s);
+  assert.match(navigation, />Servicios<.*>Proceso<.*>Filosofía<.*>Casos<.*>Contacto</s);
+  assert.doesNotMatch(navigation, />Estudio boutique<|>Sponsors<|>Formulario</);
 });
 
 test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
   assert.match(html, /id="sponsors"/);
   assert.match(html, /Ellos nos acompañan/);
   assert.equal((html.match(/assets\/images\/sponsors\/sponsor-placeholder-\d{2}\.svg/g) ?? []).length, 5);
@@ -139,6 +149,19 @@ test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local',
   }
   assert.match(html, /class="btn btn-ghost" href="#sumate">Sumate al equipo<\/a>/);
   assert.match(html, /id="sumate"/);
+  assert.match(html, /data-sponsors-strip/);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-strip[^}]*animation:\s*sponsors-loop/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsor-logo[^}]*border:\s*0[^}]*background:\s*transparent/s);
+});
+
+test('el acompañamiento estratégico aparece antes del contacto con sus tres servicios', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  assert.ok(html.indexOf('id="acompanamiento"') < html.indexOf('id="contacto"'));
+  assert.match(html, /Acompañamiento estratégico para empresas/);
+  assert.match(html, /Consultoría integral/);
+  assert.match(html, /Gestión de equipos/);
+  assert.match(html, /Planificación estratégica/);
+  assert.match(html, /Todo lo necesario para sacar el máximo potencial al proyecto\./);
 });
 
 test('servicios conserva las tarjetas web y usa selector de tres columnas solo en móvil', async () => {
@@ -155,6 +178,7 @@ test('servicios conserva las tarjetas web y usa selector de tres columnas solo e
   assert.match(js, /serviceDialog\.showModal\(\)/);
   assert.match(js, /data-service-close/);
   assert.match(js, /serviceDialog\.close\(\)/);
+  assert.match(css, /\.service-dialog\[open\][^}]*place-items:\s*center/s);
 });
 
 test('los ajustes finales de casos, portada y contacto permanecen activos', async () => {
