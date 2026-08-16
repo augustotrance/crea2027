@@ -78,3 +78,15 @@ test('las correcciones solicitadas permanecen activas en escritorio y móvil', a
   assert.match(js, /animateStat/);
   assert.match(manifest, /"sizes": "1024x1024"/);
 });
+
+test('los ajustes finales de casos, portada y contacto permanecen activos', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
+  const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
+  assert.doesNotMatch(html, /Ver caso completo|modal-case-link/);
+  assert.doesNotMatch(html, /video-toggle|data-video-(?:toggle|label|icon)/);
+  assert.doesNotMatch(css, /\.video-toggle|\.modal-case-link/);
+  assert.doesNotMatch(js, /videoToggle|modal-case-link|\.route/);
+  assert.match(html, /href="https:\/\/wa\.me\/5491127666507"/);
+  assert.doesNotMatch(html, /5491151553302/);
+});

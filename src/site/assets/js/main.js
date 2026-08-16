@@ -94,36 +94,14 @@ if (heroStats && statNumbers.length && !prefersReducedMotion) {
 }
 
 const video = document.querySelector('[data-hero-video]');
-const videoToggle = document.querySelector('[data-video-toggle]');
-const videoLabel = videoToggle?.querySelector('[data-video-label]');
-const videoIcon = videoToggle?.querySelector('[data-video-icon]');
-
-const setVideoState = (paused) => {
-  if (!videoToggle || !videoLabel || !videoIcon) return;
-  videoToggle.setAttribute('aria-pressed', String(paused));
-  videoToggle.setAttribute('aria-label', paused ? 'Reproducir video de portada' : 'Pausar video de portada');
-  videoLabel.textContent = paused ? 'Reproducir' : 'Pausar';
-  videoIcon.textContent = paused ? '▶' : 'Ⅱ';
-};
 
 if (video) {
   if (prefersReducedMotion) {
     video.pause();
-    setVideoState(true);
   } else {
-    video.play().catch(() => setVideoState(true));
+    video.play().catch(() => {});
   }
 }
-
-videoToggle?.addEventListener('click', async () => {
-  if (!video) return;
-  if (video.paused) {
-    try { await video.play(); } catch { return; }
-  } else {
-    video.pause();
-  }
-  setVideoState(video.paused);
-});
 
 const projects = {
   'beauty-premium': {
@@ -134,7 +112,7 @@ const projects = {
     hero: { src: 'assets/images/portfolio/beauty/hero.png', width: 1024, height: 892 },
     gallery: [
       { src: 'assets/images/portfolio/beauty/beauty_1.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/beauty/beauty_2.png', width: 371, height: 371 }, { src: 'assets/images/portfolio/beauty/beauty_3.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/beauty/beauty_4.png', width: 371, height: 371 }
-    ], route: 'casos/beauty-premium/'
+    ]
   },
   'restaurant-fb': {
     category: 'Branding · Art Direction', title: 'Restaurant Group · F&B', subtitle: 'Dirección de arte y sistema visual para grupo gastronómico', client: 'Grupo Gastronómico del Sur', sector: 'Food & Beverage', services: 'Art Direction, Menu Design, Food Photography', year: '2024',
@@ -142,7 +120,7 @@ const projects = {
     solution: 'Construimos una dirección de arte coherente, un sistema de menú contemporáneo y una narrativa fotográfica de alto contraste capaz de unificar los puntos de contacto sin borrar la personalidad de cada local.',
     results: ['Menú fotográfico tipo revista', '+50% reservas vía web', 'Cobertura en medios gastronómicos', 'Incremento 25% ticket promedio'],
     hero: { src: 'assets/images/portfolio/restaurant/hero.jpg', width: 1536, height: 1024 },
-    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/restaurant/gallery-0${number}.jpg`, width: 1536, height: 1024 })), route: 'casos/restaurant-editorial/'
+    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/restaurant/gallery-0${number}.jpg`, width: 1536, height: 1024 }))
   },
   'fashion-lifestyle': {
     category: 'Social Media Ecosystem', title: 'Fashion Brand · Lifestyle', subtitle: 'Ecosistema de contenido para marca de moda sustentable', client: 'Verde Moda Consciente', sector: 'Fashion & Lifestyle', services: 'Social Media Strategy, Content Design, Photography Direction', year: '2024',
@@ -150,7 +128,7 @@ const projects = {
     solution: 'Creamos un feed editorial de lujo, fotografía lifestyle cuidada, templates para narrar cada prenda y una guía completa para sostener la dirección de arte.',
     results: ['Feed tipo editorial de lujo', '+28% CTR en Instagram', '3.5% engagement rate sostenido', '+40% ventas por Instagram en 3 meses'],
     hero: { src: 'assets/images/portfolio/fashion/hero.png', width: 1184, height: 864 },
-    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/fashion/fashion_${number}.png`, width: 508, height: 371 })), route: 'casos/fashion-lifestyle/'
+    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/fashion/fashion_${number}.png`, width: 508, height: 371 }))
   },
   'educacion-elearning': {
     category: 'Branding · Social · Web', title: 'Educación · E-learning', subtitle: 'Rebranding completo de plataforma educativa online', client: 'Academia Digital Pro', sector: 'Educación Online', services: 'Branding Systems, Web Design, Social Media', year: '2024',
@@ -158,7 +136,7 @@ const projects = {
     solution: 'Desarrollamos una identidad premium, rediseñamos la experiencia de la plataforma y construimos una estrategia de contenidos orientada a posicionarla como referente.',
     results: ['Posicionamiento premium en el sector', '+200% inscripciones orgánicas', 'Precio del curso aumentado 60%', 'Tasa de finalización +25%'],
     hero: { src: 'assets/images/portfolio/education/hero.png', width: 1054, height: 1024 },
-    gallery: [{ src: 'assets/images/portfolio/education/edu_1.png', width: 1205, height: 880 }, { src: 'assets/images/portfolio/education/edu_2.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_3.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_4.png', width: 1136, height: 899 }, { src: 'assets/images/portfolio/education/edu_5.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_6.png', width: 938, height: 912 }], route: 'casos/educacion-elearning/'
+    gallery: [{ src: 'assets/images/portfolio/education/edu_1.png', width: 1205, height: 880 }, { src: 'assets/images/portfolio/education/edu_2.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_3.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_4.png', width: 1136, height: 899 }, { src: 'assets/images/portfolio/education/edu_5.png', width: 938, height: 912 }, { src: 'assets/images/portfolio/education/edu_6.png', width: 938, height: 912 }]
   },
   'derito-legal': {
     category: 'Branding · Web Experience', title: 'Derito Legal · Estudio jurídico', subtitle: 'Identidad y web para estudio jurídico', client: 'Derito Legal', sector: 'Estudio jurídico', services: 'Branding, UI/UX, Web Development', year: '2023',
@@ -166,7 +144,7 @@ const projects = {
     solution: 'Diseñamos un sistema de marca minimalista, una experiencia web con microinteracciones y una narrativa orientada a beneficios de negocio.',
     results: ['+120% conversión en landing', 'Reducción 45% bounce rate', 'Sistema visual unificado', 'Cierre con clientes Serie A'],
     hero: { src: 'assets/images/portfolio/derito/hero.png', width: 1200, height: 896 },
-    gallery: [{ src: 'assets/images/portfolio/derito/derito_1.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/derito/derito_2.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/derito/derito_3.png', width: 508, height: 371 }, { src: 'assets/images/portfolio/derito/derito_4.png', width: 508, height: 371 }, { src: 'assets/images/portfolio/derito/derito_5.png', width: 508, height: 371 }], route: 'casos/derito-legal/'
+    gallery: [{ src: 'assets/images/portfolio/derito/derito_1.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/derito/derito_2.png', width: 600, height: 371 }, { src: 'assets/images/portfolio/derito/derito_3.png', width: 508, height: 371 }, { src: 'assets/images/portfolio/derito/derito_4.png', width: 508, height: 371 }, { src: 'assets/images/portfolio/derito/derito_5.png', width: 508, height: 371 }]
   },
   'alquilerdeautos-hertz': {
     category: 'Web · Social · Content', title: 'Alquiler de autos · Hertz', subtitle: 'Ecosistema digital para empresa de alquiler de autos', client: 'Hertz', sector: 'Alquiler de autos', services: 'Web Development, Social Content, Piezas gráficas', year: '2019',
@@ -174,7 +152,7 @@ const projects = {
     solution: 'Desarrollamos la experiencia web y un sistema de piezas para folletería, videos publicitarios y contenidos en redes sociales.',
     results: ['Modernización de la marca', '+85% tiempo en sitio', '15% leads cualificados adicionales', 'Reducción 60% tiempo de cierre'],
     hero: { src: 'assets/images/portfolio/hertz/hero.png', width: 1255, height: 848 },
-    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/hertz/hertz_${number}.png`, width: 600, height: 371 })), route: 'casos/hertz-mobility/'
+    gallery: [1, 2, 3, 4, 5].map((number) => ({ src: `assets/images/portfolio/hertz/hertz_${number}.png`, width: 600, height: 371 }))
   }
 };
 
@@ -228,8 +206,6 @@ const renderProject = (projectId) => {
     return figure;
   }));
 
-  const caseLink = modal.querySelector('#modal-case-link');
-  caseLink.href = project.route;
   const previous = modal.querySelector('[data-project-prev]');
   const next = modal.querySelector('[data-project-next]');
   previous.disabled = activeProjectIndex === 0;
