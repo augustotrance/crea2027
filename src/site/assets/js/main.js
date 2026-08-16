@@ -112,6 +112,38 @@ if (video) {
   }
 }
 
+const serviceDialog = document.querySelector('[data-service-dialog]');
+const serviceDialogTitle = serviceDialog?.querySelector('[data-service-dialog-title]');
+const serviceDialogDescription = serviceDialog?.querySelector('[data-service-dialog-description]');
+const serviceDialogList = serviceDialog?.querySelector('[data-service-dialog-list]');
+const serviceDialogIcon = serviceDialog?.querySelector('[data-service-dialog-icon]');
+
+const closeServiceDialog = () => {
+  if (serviceDialog?.open) serviceDialog.close();
+};
+
+document.querySelectorAll('[data-service-open]').forEach((trigger) => {
+  trigger.addEventListener('click', () => {
+    const source = document.getElementById(trigger.dataset.serviceOpen);
+    if (!serviceDialog || !source || !serviceDialogTitle || !serviceDialogDescription || !serviceDialogList || !serviceDialogIcon) return;
+
+    serviceDialogTitle.textContent = source.querySelector('h3')?.textContent ?? '';
+    serviceDialogDescription.textContent = source.querySelector('p')?.textContent ?? '';
+    serviceDialogList.replaceChildren(...[...source.querySelectorAll('li')].map((item) => item.cloneNode(true)));
+    const sourceIcon = source.querySelector('.service-icon svg');
+    serviceDialogIcon.replaceChildren(...(sourceIcon ? [sourceIcon.cloneNode(true)] : []));
+
+    serviceDialog.showModal();
+    document.body.classList.add('service-dialog-open');
+  });
+});
+
+serviceDialog?.querySelector('[data-service-close]')?.addEventListener('click', closeServiceDialog);
+serviceDialog?.addEventListener('click', (event) => {
+  if (event.target === serviceDialog) closeServiceDialog();
+});
+serviceDialog?.addEventListener('close', () => document.body.classList.remove('service-dialog-open'));
+
 const projects = {
   'beauty-premium': {
     category: 'Branding · Social · Web', title: 'Marca Premium · Beauty', subtitle: 'Reposicionamiento de marca de belleza como opción premium en su sector', client: 'Beauty Studio Premium', sector: 'Beauty & Wellness', services: 'Branding, Social Media, Web Design', year: '2025',

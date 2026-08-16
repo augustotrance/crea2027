@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 96" role="img" aria-labelledby="title">
+  <title id="title">Sponsor provisional 03</title>
+  <g fill="none" stroke="#d1d5db" stroke-width="3">
+    <rect x="22" y="28" width="42" height="40" rx="8"/>
+    <path d="M32 38h22v20H32z"/>
+  </g>
+  <text x="78" y="46" fill="#d1d5db" font-family="Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2">PARTNER</text>
+  <text x="79" y="62" fill="#9ca3af" font-family="Arial, sans-serif" font-size="9" letter-spacing="4">03</text>
+</svg>

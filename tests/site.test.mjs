@@ -108,10 +108,53 @@ test('el cursor, el menú móvil y la navegación secundaria son consistentes', 
     const html = await readFile(resolve(root, route), 'utf8');
     assert.match(html, /data-nav-toggle/);
     assert.match(html, /data-nav/);
-    for (const section of ['laboratorio', 'portfolio', 'services', 'about', 'contacto']) {
+    for (const section of ['hero', 'services', 'laboratorio', 'about', 'portfolio', 'sponsors', 'contacto']) {
       assert.ok(html.includes(`href="../#${section}"`), `${route}: ${section}`);
     }
   }
+});
+
+test('la portada y la navegación respetan el nuevo orden institucional', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const order = ['hero', 'services', 'laboratorio', 'about', 'portfolio', 'sponsors', 'contacto'];
+  const sectionPositions = order.map((id) => html.indexOf(`id="${id}"`));
+  assert.ok(sectionPositions.every((position) => position >= 0));
+  assert.deepEqual([...sectionPositions].sort((a, b) => a - b), sectionPositions);
+
+  const navigation = html.match(/<nav class="main-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
+  const navigationPositions = order.map((id) => navigation.indexOf(`href="#${id}"`));
+  assert.ok(navigationPositions.every((position) => position >= 0));
+  assert.deepEqual([...navigationPositions].sort((a, b) => a - b), navigationPositions);
+  assert.match(navigation, />Estudio boutique<.*>Servicios<.*>Proceso<.*>Filosofía<.*>Casos<.*>Sponsors<.*>Formulario</s);
+});
+
+test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  assert.match(html, /id="sponsors"/);
+  assert.match(html, /Ellos nos acompañan/);
+  assert.equal((html.match(/assets\/images\/sponsors\/sponsor-placeholder-\d{2}\.svg/g) ?? []).length, 5);
+  for (let number = 1; number <= 5; number += 1) {
+    const suffix = String(number).padStart(2, '0');
+    assert.equal((await stat(resolve(root, `assets/images/sponsors/sponsor-placeholder-${suffix}.svg`))).isFile(), true);
+  }
+  assert.match(html, /class="btn btn-ghost" href="#sumate">Sumate al equipo<\/a>/);
+  assert.match(html, /id="sumate"/);
+});
+
+test('servicios conserva las tarjetas web y usa selector de tres columnas solo en móvil', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
+  const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
+  assert.equal((html.match(/class="service-card service-card--/g) ?? []).length, 6);
+  assert.equal((html.match(/data-service-open="service-/g) ?? []).length, 6);
+  assert.match(html, /class="service-dialog"[^>]*data-service-dialog/);
+  assert.match(css, /\.services-grid[^}]*repeat\(3,/s);
+  assert.match(css, /\.services-mobile\s*\{\s*display:\s*none/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.services-grid[^}]*display:\s*none/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.services-mobile[^}]*repeat\(3,/s);
+  assert.match(js, /serviceDialog\.showModal\(\)/);
+  assert.match(js, /data-service-close/);
+  assert.match(js, /serviceDialog\.close\(\)/);
 });
 
 test('los ajustes finales de casos, portada y contacto permanecen activos', async () => {
