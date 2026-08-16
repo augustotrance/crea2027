@@ -8,7 +8,7 @@ Nueva versión del sitio institucional y portfolio de CREA Design Studio. Este r
 - Video original completo de 60 segundos y 1920 × 1080, sin recortes ni reordenamiento.
 - Seis casos disponibles en un modal accesible y en una URL propia para compartir e indexar.
 - Imágenes originales en su máxima calidad disponible y galerías sin deformación.
-- Navegación móvil, animaciones progresivas y control de reproducción del video.
+- Navegación móvil y animaciones progresivas, con reproducción automática del video y respeto por la preferencia de movimiento reducido.
 - Formulario accesible conectado a Formspree, con consentimiento y alternativa por correo.
 - Páginas de privacidad, términos, error 404, sitemap, robots y datos estructurados.
 - Compilación, controles automáticos, pruebas y publicación mediante GitHub Actions.

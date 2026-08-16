@@ -14,7 +14,7 @@ Cada caso tiene una carpeta propia en `assets/images/portfolio/<caso>/`. La port
 
 - PNG original sin reducción de resolución para el portfolio recuperado.
 - Imágenes generadas del caso Restaurante en JPEG 4:4:4, calidad 96 y 1536 × 1024.
-- Video original de 60,07 segundos, 1920 × 1080 y 23.997.460 bytes; reproducción silenciosa, `preload="metadata"` y control de pausa.
+- Video original de 60,07 segundos, 1920 × 1080 y 23.997.460 bytes; reproducción silenciosa y automática con `preload="metadata"`.
 - Todas las imágenes de contenido deben declarar texto alternativo y dimensiones.
 
 Antes de incorporar material nuevo, verificar derechos de uso y conservar el archivo fuente fuera de `dist/` si necesita edición futura.

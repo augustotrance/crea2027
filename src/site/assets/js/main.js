@@ -1,12 +1,14 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const supportsCustomCursor = window.matchMedia('(pointer: fine) and (hover: hover)').matches;
+let customCursor = null;
 if (supportsCustomCursor) {
   document.documentElement.classList.add('custom-cursor-enabled');
   const cursor = document.createElement('div');
   cursor.className = 'custom-cursor';
   cursor.setAttribute('aria-hidden', 'true');
   document.body.append(cursor);
+  customCursor = cursor;
 
   const interactiveSelector = 'a, button, .portfolio-card, .service-card, input, select, textarea';
   document.addEventListener('pointermove', (event) => {
@@ -27,19 +29,26 @@ window.addEventListener('scroll', updateHeader, { passive: true });
 
 const navToggle = document.querySelector('[data-nav-toggle]');
 const nav = document.querySelector('[data-nav]');
+const navToggleLabel = navToggle?.querySelector('.sr-only');
 const closeNav = () => {
   if (!nav || !navToggle) return;
   nav.classList.remove('is-open');
   navToggle.setAttribute('aria-expanded', 'false');
+  if (navToggleLabel) navToggleLabel.textContent = 'Abrir menú';
   document.body.classList.remove('nav-open');
 };
 
 navToggle?.addEventListener('click', () => {
   const open = nav?.classList.toggle('is-open') ?? false;
   navToggle.setAttribute('aria-expanded', String(open));
+  if (navToggleLabel) navToggleLabel.textContent = open ? 'Cerrar menú' : 'Abrir menú';
   document.body.classList.toggle('nav-open', open);
 });
 nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
+document.addEventListener('pointerdown', (event) => {
+  if (!nav?.classList.contains('is-open') || !navToggle || !(event.target instanceof Node)) return;
+  if (!nav.contains(event.target) && !navToggle.contains(event.target)) closeNav();
+});
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') closeNav();
 });
@@ -217,19 +226,24 @@ document.querySelectorAll('[data-project]').forEach((trigger) => {
   trigger.addEventListener('click', () => {
     renderProject(trigger.dataset.project);
     if (!modal?.open) modal?.showModal();
+    if (customCursor && modal) modal.append(customCursor);
     document.body.classList.add('modal-open');
   });
 });
 
 const closeModal = () => {
   modal?.close();
+  if (customCursor) document.body.append(customCursor);
   document.body.classList.remove('modal-open');
 };
 modal?.querySelector('[data-modal-close]')?.addEventListener('click', closeModal);
 modal?.addEventListener('click', (event) => {
   if (event.target === modal) closeModal();
 });
-modal?.addEventListener('close', () => document.body.classList.remove('modal-open'));
+modal?.addEventListener('close', () => {
+  if (customCursor) document.body.append(customCursor);
+  document.body.classList.remove('modal-open');
+});
 modal?.querySelector('[data-project-prev]')?.addEventListener('click', () => renderProject(projectOrder[activeProjectIndex - 1]));
 modal?.querySelector('[data-project-next]')?.addEventListener('click', () => renderProject(projectOrder[activeProjectIndex + 1]));
 document.addEventListener('keydown', (event) => {

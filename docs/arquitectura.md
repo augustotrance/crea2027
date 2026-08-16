@@ -22,8 +22,8 @@
 - Imágenes individuales: hasta 4 MB para conservar los originales sin recompresión destructiva.
 - Video: hasta 30 MB; la verificación exige más de 20 MB para detectar una versión recortada.
 - Se cargan las fuentes de marca desde Google Fonts; no se cargan analítica ni bibliotecas JavaScript externas.
-- El video usa `preload="metadata"`, imagen de respaldo y control de pausa. Con movimiento reducido se muestra solo el poster.
+- El video usa `preload="metadata"`, imagen de respaldo y reproducción automática silenciosa. Con movimiento reducido se muestra solo el poster.
 
 ## JavaScript
 
-`assets/js/main.js` contiene módulos funcionales pequeños: cabecera y menú, control del video, revelado progresivo, modal de proyectos, formulario y año. Las páginas individuales permiten leer cada caso aun si JavaScript no está disponible.
+`assets/js/main.js` contiene módulos funcionales pequeños: cabecera y menú, reproducción del video, revelado progresivo, modal de proyectos, formulario y año. Las páginas individuales permiten leer cada caso aun si JavaScript no está disponible.

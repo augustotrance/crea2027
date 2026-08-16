@@ -60,7 +60,9 @@ test('las galerías preservan las proporciones naturales', async () => {
   const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
   assert.match(css, /\.gallery-item img[^}]*height:\s*auto/s);
   assert.match(css, /\.case-gallery img[^}]*height:\s*auto/s);
-  assert.match(css, /\.project-hero img[^}]*object-fit:\s*contain/s);
+  assert.match(css, /\.project-hero img[^}]*width:\s*100%[^}]*height:\s*auto/s);
+  assert.match(css, /\.case-cover img[^}]*width:\s*100%[^}]*height:\s*auto/s);
+  assert.doesNotMatch(css, /\.(?:project-hero|case-cover) img[^}]*max-height/s);
 });
 
 test('las correcciones solicitadas permanecen activas en escritorio y móvil', async () => {
@@ -77,6 +79,22 @@ test('las correcciones solicitadas permanecen activas en escritorio y móvil', a
   assert.match(js, /custom-cursor-enabled/);
   assert.match(js, /animateStat/);
   assert.match(manifest, /"sizes": "1024x1024"/);
+});
+
+test('el cursor, el menú móvil y la navegación secundaria son consistentes', async () => {
+  const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
+  const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
+  assert.match(js, /modal\.append\(customCursor\)/);
+  assert.match(js, /document\.body\.append\(customCursor\)/);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.main-nav[^}]*linear-gradient[^}]*backdrop-filter/s);
+  for (const route of ['privacidad/index.html', 'terminos/index.html']) {
+    const html = await readFile(resolve(root, route), 'utf8');
+    assert.match(html, /data-nav-toggle/);
+    assert.match(html, /data-nav/);
+    for (const section of ['laboratorio', 'portfolio', 'services', 'about', 'contacto']) {
+      assert.ok(html.includes(`href="../#${section}"`), `${route}: ${section}`);
+    }
+  }
 });
 
 test('los ajustes finales de casos, portada y contacto permanecen activos', async () => {
