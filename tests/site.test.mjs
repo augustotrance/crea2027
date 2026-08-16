@@ -147,7 +147,7 @@ test('el cursor, el menú móvil y la navegación secundaria son consistentes', 
       assert.ok(html.includes(`href="../#${section}"`), `${route}: ${section}`);
     }
     assert.doesNotMatch(html, /href="\.\.\/#(?:hero|sponsors)"/);
-    assert.match(html, /href="\.\.\/#portfolio">Proyectos<\/a><button class="nav-faq"[^>]*data-faq-open[^>]*>Preguntas frecuentes<\/button><a class="nav-cta" href="\.\.\/#contacto">Contacto/);
+    assert.match(html, /href="\.\.\/#portfolio">Proyectos<\/a><button class="nav-faq"[^>]*data-faq-open[^>]*>FAQ<\/button><a class="nav-cta" href="\.\.\/#contacto">Contacto/);
     assert.match(html, /href="\.\.\/#contacto">Contacto</);
   }
 });
@@ -164,7 +164,7 @@ test('la portada y la navegación respetan el nuevo orden institucional', async 
   const navigationPositions = navigationOrder.map((id) => navigation.indexOf(`href="#${id}"`));
   assert.ok(navigationPositions.every((position) => position >= 0));
   assert.deepEqual([...navigationPositions].sort((a, b) => a - b), navigationPositions);
-  assert.match(navigation, />Servicios<.*>Proceso<.*>Filosofía<.*>Proyectos<.*>Preguntas frecuentes<.*>Contacto</s);
+  assert.match(navigation, />Servicios<.*>Proceso<.*>Filosofía<.*>Proyectos<.*>FAQ<.*>Contacto</s);
   assert.doesNotMatch(navigation, />Estudio boutique<|>Sponsors<|>Formulario</);
 });
 
@@ -174,13 +174,14 @@ test('preguntas frecuentes está disponible desde el header y el footer con diez
   const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
   const i18n = await readFile(resolve(root, 'assets/js/i18n.js'), 'utf8');
   assert.equal((html.match(/data-faq-open/g) ?? []).length, 2);
-  assert.match(html, /<a href="#portfolio">Proyectos<\/a><button class="nav-faq"[^>]*data-faq-open[^>]*>Preguntas frecuentes<\/button><a class="nav-cta" href="#contacto">Contacto/);
+  assert.match(html, /<a href="#portfolio">Proyectos<\/a><button class="nav-faq"[^>]*data-faq-open[^>]*>FAQ<\/button><a class="nav-cta" href="#contacto">Contacto/);
   assert.match(html, /href="#contacto">Formulario<\/a><button class="footer-faq-link"[^>]*data-faq-open[^>]*>Preguntas frecuentes<\/button>/);
   const faqSource = js.match(/const faqItems = \[([\s\S]*?)\n\];/)?.[1] ?? '';
   assert.equal((faqSource.match(/^\s*\[/gm) ?? []).length, 10);
   assert.match(js, /faqDialog\.showModal\(\)/);
   assert.match(js, /data-faq-close/);
   assert.match(css, /\.faq-dialog\[open\][^}]*place-items:\s*center/s);
+  assert.match(css, /\.footer-faq-link[^}]*font-weight:\s*700/s);
   assert.match(i18n, /\["Preguntas frecuentes", "Frequently Asked Questions"\]/);
   assert.match(i18n, /\["¿Ofrecen acompañamiento después de la entrega\?", "Do you offer support after delivery\?"\]/);
 
@@ -205,6 +206,13 @@ test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local',
   assert.match(html, /id="sumate"/);
   assert.match(html, /data-sponsors-strip/);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-strip[^}]*animation:\s*sponsors-loop/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-strip[^}]*gap:\s*0/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsor-logo[^}]*margin-right:\s*\.8rem/s);
+  assert.match(css, /@keyframes sponsors-loop[^}]*translate3d\(0,0,0\)[\s\S]*?translate3d\(-50%,0,0\)/s);
+  const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
+  assert.match(js, /querySelectorAll\('\[data-sponsor-clone\]'\).*remove\(\)/s);
+  assert.match(js, /cloneNode\(true\)/);
+  assert.match(js, /clone\.dataset\.sponsorClone/);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsor-logo[^}]*border:\s*0[^}]*background:\s*transparent/s);
 });
 
@@ -240,6 +248,8 @@ test('servicios conserva las tarjetas web y usa selector de tres columnas solo e
   assert.match(js, /serviceDialog\.showModal\(\)/);
   assert.match(js, /data-service-close/);
   assert.match(js, /serviceDialog\.close\(\)/);
+  assert.match(js, /className\.startsWith\('service-card--'\)/);
+  assert.match(js, /serviceDialogIcon\.className = \['service-icon', 'service-dialog-icon', accentClass\]/);
   assert.match(css, /\.service-dialog\[open\][^}]*place-items:\s*center/s);
 });
 

@@ -162,6 +162,8 @@ document.querySelectorAll('[data-service-open]').forEach((trigger) => {
       return item;
     }));
     const sourceIcon = source.querySelector('.service-icon svg');
+    const accentClass = [...source.classList].find((className) => className.startsWith('service-card--'));
+    serviceDialogIcon.className = ['service-icon', 'service-dialog-icon', accentClass].filter(Boolean).join(' ');
     serviceDialogIcon.replaceChildren(...(sourceIcon ? [sourceIcon.cloneNode(true)] : []));
 
     serviceDialog.showModal();
