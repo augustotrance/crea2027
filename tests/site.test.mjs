@@ -65,7 +65,7 @@ test('las galerías preservan las proporciones naturales', async () => {
   assert.doesNotMatch(css, /\.(?:project-hero|case-cover) img[^}]*max-height/s);
 });
 
-test('las galerías conservan proporciones y alinean e-learning y Derito por filas', async () => {
+test('las galerías conservan proporciones y e-learning usa una grilla uniforme propia', async () => {
   const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
   const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
   assert.match(css, /\.gallery-grid[^}]*columns:\s*2/s);
@@ -74,16 +74,45 @@ test('las galerías conservan proporciones y alinean e-learning y Derito por fil
   assert.match(css, /\.case-gallery figure[^}]*break-inside:\s*avoid/s);
   assert.match(css, /\.gallery-grid--aligned[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(2,/s);
   assert.match(css, /\.case-gallery--aligned[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(2,/s);
+  assert.match(css, /\.gallery-grid--education[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(2,/s);
+  assert.match(css, /\.gallery-grid--education \.gallery-item[^}]*aspect-ratio:\s*5\s*\/\s*4/s);
+  assert.match(css, /\.gallery-grid--education \.gallery-item img[^}]*object-fit:\s*cover/s);
+  assert.match(css, /\.case-gallery--education[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(2,/s);
+  assert.match(css, /\.case-gallery--education figure[^}]*aspect-ratio:\s*5\s*\/\s*4/s);
+  assert.match(css, /\.case-gallery--education img[^}]*object-fit:\s*cover/s);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.gallery-grid[^}]*columns:\s*1/);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.case-gallery[^}]*columns:\s*1/);
-  assert.match(js, /\['educacion-elearning', 'derito-legal'\][^\n]*includes\(projectId\)/);
+  assert.match(js, /gallery-grid--aligned', projectId === 'derito-legal'/);
+  assert.match(js, /gallery-grid--education', projectId === 'educacion-elearning'/);
 
   for (const route of routes.filter((route) => route.startsWith('casos/'))) {
     const html = await readFile(resolve(root, route), 'utf8');
-    const aligned = route.includes('educacion-elearning') || route.includes('derito-legal');
-    assert.equal((html.match(/class="case-gallery(?: case-gallery--aligned)?"/g) ?? []).length, 1, route);
+    const aligned = route.includes('derito-legal');
+    const education = route.includes('educacion-elearning');
+    assert.equal((html.match(/class="case-gallery(?: case-gallery--(?:aligned|education))?"/g) ?? []).length, 1, route);
     assert.equal(html.includes('case-gallery--aligned'), aligned, route);
+    assert.equal(html.includes('case-gallery--education'), education, route);
     assert.ok((html.match(/<figure>/g) ?? []).length >= 4, route);
+  }
+});
+
+test('el selector ESP–ENG traduce el sitio completo y conserva español por defecto', async () => {
+  const main = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
+  const i18n = await readFile(resolve(root, 'assets/js/i18n.js'), 'utf8');
+  assert.match(main, /from '\.\/i18n\.js'/);
+  assert.match(main, /initializeLanguage\(\)/);
+  assert.match(i18n, /const storageKey = "crea-language"/);
+  assert.match(i18n, /document\.documentElement\.lang = currentLanguage/);
+  assert.match(i18n, /savedLanguage = "es"/);
+  assert.match(i18n, /\["No solo diseñamos,", "We don't just design,"\]/);
+  assert.match(i18n, /\["Política de privacidad", "Privacy Policy"\]/);
+  assert.match(i18n, /\["Acompañamiento estratégico para empresas", "Strategic Business Support"\]/);
+
+  for (const route of routes) {
+    const html = await readFile(resolve(root, route), 'utf8');
+    assert.equal((html.match(/data-language-toggle/g) ?? []).length, 1, route);
+    assert.match(html, /<html lang="es">/, route);
+    assert.match(html, /type="module" src="(?:\.\.\/\.\.\/|\.\.\/)?assets\/js\/main\.js"/, route);
   }
 });
 
@@ -156,12 +185,16 @@ test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local',
 
 test('el acompañamiento estratégico aparece antes del contacto con sus tres servicios', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
   assert.ok(html.indexOf('id="acompanamiento"') < html.indexOf('id="contacto"'));
   assert.match(html, /Acompañamiento estratégico para empresas/);
   assert.match(html, /Consultoría integral/);
   assert.match(html, /Gestión de equipos/);
   assert.match(html, /Planificación estratégica/);
   assert.match(html, /Todo lo necesario para sacar el máximo potencial al proyecto\./);
+  assert.match(css, /\.strategic-support::before[^}]*hero-poster\.jpg[^}]*cover/s);
+  assert.match(css, /\.strategic-support::after[^}]*linear-gradient/s);
+  assert.match(css, /\.strategic-support-card:hover[^}]*translateY\(-6px\)/s);
 });
 
 test('servicios conserva las tarjetas web y usa selector de tres columnas solo en móvil', async () => {
@@ -175,6 +208,8 @@ test('servicios conserva las tarjetas web y usa selector de tres columnas solo e
   assert.match(css, /\.services-mobile\s*\{\s*display:\s*none/s);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.services-grid[^}]*display:\s*none/s);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.services-mobile[^}]*repeat\(3,/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.service-tile \.service-icon[^}]*width:\s*52px[^}]*height:\s*52px/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.logo-text[^}]*display:\s*block/s);
   assert.match(js, /serviceDialog\.showModal\(\)/);
   assert.match(js, /data-service-close/);
   assert.match(js, /serviceDialog\.close\(\)/);

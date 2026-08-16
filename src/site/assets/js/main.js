@@ -1,3 +1,5 @@
+import { initializeLanguage, setI18nAttribute, setI18nText } from './i18n.js';
+
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const supportsCustomCursor = window.matchMedia('(pointer: fine) and (hover: hover)').matches;
@@ -34,14 +36,14 @@ const closeNav = () => {
   if (!nav || !navToggle) return;
   nav.classList.remove('is-open');
   navToggle.setAttribute('aria-expanded', 'false');
-  if (navToggleLabel) navToggleLabel.textContent = 'Abrir menú';
+  setI18nText(navToggleLabel, 'Abrir menú');
   document.body.classList.remove('nav-open');
 };
 
 navToggle?.addEventListener('click', () => {
   const open = nav?.classList.toggle('is-open') ?? false;
   navToggle.setAttribute('aria-expanded', String(open));
-  if (navToggleLabel) navToggleLabel.textContent = open ? 'Cerrar menú' : 'Abrir menú';
+  setI18nText(navToggleLabel, open ? 'Cerrar menú' : 'Abrir menú');
   document.body.classList.toggle('nav-open', open);
 });
 nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
@@ -136,6 +138,11 @@ const serviceDialogTitle = serviceDialog?.querySelector('[data-service-dialog-ti
 const serviceDialogDescription = serviceDialog?.querySelector('[data-service-dialog-description]');
 const serviceDialogList = serviceDialog?.querySelector('[data-service-dialog-list]');
 const serviceDialogIcon = serviceDialog?.querySelector('[data-service-dialog-icon]');
+const serviceContent = new Map([...document.querySelectorAll('.service-card[id]')].map((service) => [service.id, {
+  title: service.querySelector('h3')?.textContent.trim() ?? '',
+  description: service.querySelector('p')?.textContent.trim() ?? '',
+  items: [...service.querySelectorAll('li')].map((item) => item.textContent.trim())
+}]));
 
 const closeServiceDialog = () => {
   if (serviceDialog?.open) serviceDialog.close();
@@ -144,11 +151,16 @@ const closeServiceDialog = () => {
 document.querySelectorAll('[data-service-open]').forEach((trigger) => {
   trigger.addEventListener('click', () => {
     const source = document.getElementById(trigger.dataset.serviceOpen);
-    if (!serviceDialog || !source || !serviceDialogTitle || !serviceDialogDescription || !serviceDialogList || !serviceDialogIcon) return;
+    const content = serviceContent.get(trigger.dataset.serviceOpen);
+    if (!serviceDialog || !source || !content || !serviceDialogTitle || !serviceDialogDescription || !serviceDialogList || !serviceDialogIcon) return;
 
-    serviceDialogTitle.textContent = source.querySelector('h3')?.textContent ?? '';
-    serviceDialogDescription.textContent = source.querySelector('p')?.textContent ?? '';
-    serviceDialogList.replaceChildren(...[...source.querySelectorAll('li')].map((item) => item.cloneNode(true)));
+    setI18nText(serviceDialogTitle, content.title);
+    setI18nText(serviceDialogDescription, content.description);
+    serviceDialogList.replaceChildren(...content.items.map((text) => {
+      const item = document.createElement('li');
+      setI18nText(item, text);
+      return item;
+    }));
     const sourceIcon = source.querySelector('.service-icon svg');
     serviceDialogIcon.replaceChildren(...(sourceIcon ? [sourceIcon.cloneNode(true)] : []));
 
@@ -222,7 +234,7 @@ let activeProjectIndex = 0;
 
 const setText = (selector, value) => {
   const element = modal?.querySelector(selector);
-  if (element) element.textContent = value;
+  setI18nText(element, value);
 };
 
 const renderProject = (projectId) => {
@@ -243,17 +255,18 @@ const renderProject = (projectId) => {
   hero.src = project.hero.src;
   hero.width = project.hero.width;
   hero.height = project.hero.height;
-  hero.alt = project.title;
+  setI18nAttribute(hero, 'alt', project.title);
 
   const results = modal.querySelector('#modal-results');
   results.replaceChildren(...project.results.map((result) => {
     const item = document.createElement('li');
-    item.textContent = result;
+    setI18nText(item, result);
     return item;
   }));
 
   const gallery = modal.querySelector('#modal-gallery');
-  gallery.classList.toggle('gallery-grid--aligned', ['educacion-elearning', 'derito-legal'].includes(projectId));
+  gallery.classList.toggle('gallery-grid--aligned', projectId === 'derito-legal');
+  gallery.classList.toggle('gallery-grid--education', projectId === 'educacion-elearning');
   gallery.replaceChildren(...project.gallery.map((image, index) => {
     const figure = document.createElement('figure');
     figure.className = 'gallery-item';
@@ -262,7 +275,7 @@ const renderProject = (projectId) => {
     img.width = image.width;
     img.height = image.height;
     img.loading = 'lazy';
-    img.alt = `${project.title}, imagen ${index + 1}`;
+    setI18nAttribute(img, 'alt', `${project.title}, imagen ${index + 1}`);
     figure.append(img);
     return figure;
   }));
@@ -305,30 +318,32 @@ document.addEventListener('keydown', (event) => {
 });
 
 const contactForm = document.querySelector('[data-contact-form]');
+const contactSubmitLabel = contactForm?.querySelector('button[type="submit"]')?.textContent.trim() ?? 'Enviar proyecto';
 contactForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const button = contactForm.querySelector('button[type="submit"]');
   const status = contactForm.querySelector('[data-form-status]');
-  const defaultLabel = button.textContent;
   button.disabled = true;
-  button.textContent = 'Enviando…';
+  setI18nText(button, 'Enviando…');
   status.textContent = '';
+  status.removeAttribute('data-i18n-source');
   status.className = 'form-status';
   try {
     const response = await fetch(contactForm.action, { method: 'POST', body: new FormData(contactForm), headers: { Accept: 'application/json' } });
     if (!response.ok) throw new Error('No se pudo enviar');
     contactForm.reset();
-    status.textContent = 'Proyecto enviado. Gracias por escribirnos.';
+    setI18nText(status, 'Proyecto enviado. Gracias por escribirnos.');
     status.classList.add('is-success');
-    button.textContent = 'Proyecto enviado';
+    setI18nText(button, 'Proyecto enviado');
   } catch {
-    status.textContent = 'No pudimos enviarlo. Podés escribir a estudiodcrea@gmail.com.';
+    setI18nText(status, 'No pudimos enviarlo. Podés escribir a estudiodcrea@gmail.com.');
     status.classList.add('is-error');
-    button.textContent = 'Reintentar';
+    setI18nText(button, 'Reintentar');
   } finally {
     button.disabled = false;
-    window.setTimeout(() => { button.textContent = defaultLabel; }, 3500);
+    window.setTimeout(() => { setI18nText(button, contactSubmitLabel); }, 3500);
   }
 });
 
 document.querySelectorAll('[data-year]').forEach((year) => { year.textContent = new Date().getFullYear(); });
+initializeLanguage();
