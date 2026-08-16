@@ -1,0 +1,52 @@
+name: Aplicar correcciones de casos y navegación
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crea-case-nav-update
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verificar y aplicar paquete
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 --decode .github/crea-transfer/case-nav-0022af8.b64 > /tmp/crea-case-nav.tgz
+          echo "657ffd1b3a27429fe6f02f7f6fe907eed9cf263bc2e652bcbf0511c5ad02a42d  /tmp/crea-case-nav.tgz" | sha256sum -c -
+          tar -xzf /tmp/crea-case-nav.tgz
+          node scripts/check.mjs
+          node --test tests/*.test.mjs
+          node scripts/build.mjs
+          git diff --check
+
+      - name: Publicar correcciones
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md docs/arquitectura.md docs/recursos.md src/site/assets/css/styles.css src/site/assets/js/main.js src/site/privacidad/index.html src/site/terminos/index.html tests/site.test.mjs
+          if git diff --cached --quiet; then
+            echo "No hay cambios para publicar."
+            exit 1
+          fi
+          git commit -m "fix: corrige casos y navegación secundaria"
+          git push origin HEAD:main
