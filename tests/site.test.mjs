@@ -197,13 +197,10 @@ test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local',
   const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
   assert.match(html, /id="sponsors"/);
   assert.match(html, /Ellos nos acompañan/);
-  assert.equal((html.match(/assets\/images\/sponsors\/sponsor-placeholder-\d{2}\.svg/g) ?? []).length, 10);
-  assert.equal((html.match(/class="sponsors-group"/g) ?? []).length, 2);
-  assert.match(html, /class="sponsors-group" aria-hidden="true"/);
-  const sponsorGroups = [...html.matchAll(/<div class="sponsors-group"[^>]*>([\s\S]*?)<\/div>/g)]
-    .map((match) => [...match[1].matchAll(/src="([^"]+)"/g)].map((image) => image[1]));
-  assert.equal(sponsorGroups.length, 2);
-  assert.deepEqual(sponsorGroups[1], sponsorGroups[0]);
+  assert.equal((html.match(/assets\/images\/sponsors\/sponsor-placeholder-\d{2}\.svg/g) ?? []).length, 5);
+  assert.equal((html.match(/class="sponsors-group"/g) ?? []).length, 1);
+  assert.doesNotMatch(html, /class="sponsors-group" aria-hidden="true"/);
+  assert.equal((html.match(/loading="eager" decoding="sync"/g) ?? []).length, 5);
   for (let number = 1; number <= 5; number += 1) {
     const suffix = String(number).padStart(2, '0');
     assert.equal((await stat(resolve(root, `assets/images/sponsors/sponsor-placeholder-${suffix}.svg`))).isFile(), true);
@@ -211,10 +208,22 @@ test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local',
   assert.match(html, /class="btn btn-ghost" href="#sumate">Sumate al equipo<\/a>/);
   assert.match(html, /id="sumate"/);
   assert.match(html, /data-sponsors-strip/);
-  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-strip[^}]*animation:\s*sponsors-loop/s);
-  assert.match(css, /\.sponsors-group\[aria-hidden="true"\][^}]*display:\s*none/s);
-  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-group, \.sponsors-group\[aria-hidden="true"\][^}]*display:\s*flex[^}]*flex:\s*0 0 auto[^}]*gap:\s*\.8rem[^}]*padding-right:\s*\.8rem/s);
-  assert.match(css, /@keyframes sponsors-loop[^}]*translate3d\(0,0,0\)[\s\S]*?translate3d\(-50%,0,0\)/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-marquee[^}]*--sponsor-width:\s*180px[^}]*--sponsor-reset-left:\s*-181px[^}]*--sponsor-reset-right:\s*784px/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-strip, \.sponsors-group[^}]*position:\s*relative[^}]*width:\s*100%[^}]*height:\s*100%/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsor-logo[^}]*position:\s*absolute[^}]*animation:\s*sponsor-flow 22s linear infinite both[^}]*backface-visibility:\s*hidden/s);
+  assert.match(css, /@keyframes sponsor-flow[\s\S]*?var\(--sponsor-reset-right\)[\s\S]*?var\(--sponsor-reset-left\)/s);
+  assert.doesNotMatch(css, /@keyframes sponsors-loop|\.sponsors-strip[^}]*animation:/s);
+  for (const delay of ['0s', '-4.4s', '-8.8s', '-13.2s', '-17.6s']) {
+    assert.match(css, new RegExp(`animation-delay: ${delay.replace('.', '\\.')}`));
+  }
+  const sponsorWidth = 180;
+  const sponsorResetLeft = -181;
+  const sponsorResetRight = 784;
+  const sponsorCycle = sponsorResetRight - sponsorResetLeft;
+  const mobileViewportMax = 768;
+  assert.ok(sponsorResetLeft + sponsorWidth < 0, 'el reinicio izquierdo debe ocurrir fuera del viewport');
+  assert.ok(sponsorResetRight > mobileViewportMax, 'el reinicio derecho debe ocurrir fuera del viewport');
+  assert.equal(sponsorCycle / 5, 193, 'la separación debe ser constante durante todo el ciclo');
   const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
   assert.doesNotMatch(js, /data-sponsor-clone|syncSponsorLoop|sponsorsStrip\.querySelectorAll/);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsor-logo[^}]*border:\s*0[^}]*background:\s*transparent/s);

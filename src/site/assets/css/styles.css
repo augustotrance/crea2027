@@ -371,10 +371,14 @@ textarea { min-height: 150px; resize: vertical; }
   .service-tile .service-icon { width: 52px; height: 52px; margin: 0; }
   .service-tile .service-icon svg { width: 31px; }
   .service-tile > span:last-child { overflow-wrap: anywhere; font-family: var(--font-display); font-size: .72rem; font-weight: 600; line-height: 1.15; text-align: center; }
-  .sponsors-marquee { margin-inline: -1rem; padding-inline: 1rem; overflow: hidden; }
-  .sponsors-strip { display: flex; width: max-content; animation: sponsors-loop 22s linear infinite; will-change: transform; }
-  .sponsors-group, .sponsors-group[aria-hidden="true"] { display: flex; flex: 0 0 auto; gap: .8rem; padding-right: .8rem; }
-  .sponsor-logo { min-width: 180px; min-height: 96px; flex: 0 0 180px; padding: 0; border: 0; border-radius: 0; background: transparent; }
+  .sponsors-marquee { --sponsor-width: 180px; --sponsor-reset-left: -181px; --sponsor-reset-right: 784px; position: relative; height: 96px; margin-inline: -1rem; padding-inline: 0; overflow: hidden; }
+  .sponsors-strip, .sponsors-group { position: relative; display: block; width: 100%; height: 100%; }
+  .sponsor-logo { position: absolute; top: 0; left: 0; width: var(--sponsor-width); min-width: var(--sponsor-width); min-height: 96px; padding: 0; border: 0; border-radius: 0; background: transparent; animation: sponsor-flow 22s linear infinite both; backface-visibility: hidden; contain: layout paint; will-change: transform; }
+  .sponsor-logo:nth-child(1) { animation-delay: 0s; }
+  .sponsor-logo:nth-child(2) { animation-delay: -4.4s; }
+  .sponsor-logo:nth-child(3) { animation-delay: -8.8s; }
+  .sponsor-logo:nth-child(4) { animation-delay: -13.2s; }
+  .sponsor-logo:nth-child(5) { animation-delay: -17.6s; }
   .sponsor-logo:hover { transform: none; border-color: transparent; background: transparent; }
   .sponsor-logo img { max-width: 160px; }
   .strategic-support { background: linear-gradient(180deg, rgba(10,10,15,.91), rgba(10,10,15,.79)), url("../images/brand/hero-poster.jpg") center / cover no-repeat; }
@@ -395,7 +399,10 @@ textarea { min-height: 150px; resize: vertical; }
   .case-hero-grid, .case-copy { grid-template-columns: 1fr; }.case-gallery { columns: 1; }.case-gallery--aligned, .case-gallery--education { grid-template-columns: 1fr; }.case-cta { align-items: flex-start; flex-direction: column; }
 }
 
-@keyframes sponsors-loop { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+@keyframes sponsor-flow {
+  from { transform: translate3d(var(--sponsor-reset-right),0,0); }
+  to { transform: translate3d(var(--sponsor-reset-left),0,0); }
+}
 
 @media (max-width: 480px) {
   h1 { font-size: clamp(2.2rem, 11vw, 3rem); } h2 { font-size: 1.85rem; }
@@ -414,7 +421,13 @@ textarea { min-height: 150px; resize: vertical; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   [data-reveal] { opacity: 1; transform: none; }
   .hero-video { display: none; }
-  .sponsors-strip { animation: none; }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .sponsors-marquee { height: auto; overflow-x: auto; }
+  .sponsors-strip { width: max-content; height: auto; }
+  .sponsors-group { display: flex; width: max-content; height: auto; gap: 13px; }
+  .sponsor-logo { position: static; flex: 0 0 180px; animation: none; transform: none; }
 }
 
 @media (hover: none), (pointer: coarse) {
