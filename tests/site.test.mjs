@@ -197,7 +197,13 @@ test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local',
   const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
   assert.match(html, /id="sponsors"/);
   assert.match(html, /Ellos nos acompañan/);
-  assert.equal((html.match(/assets\/images\/sponsors\/sponsor-placeholder-\d{2}\.svg/g) ?? []).length, 5);
+  assert.equal((html.match(/assets\/images\/sponsors\/sponsor-placeholder-\d{2}\.svg/g) ?? []).length, 10);
+  assert.equal((html.match(/class="sponsors-group"/g) ?? []).length, 2);
+  assert.match(html, /class="sponsors-group" aria-hidden="true"/);
+  const sponsorGroups = [...html.matchAll(/<div class="sponsors-group"[^>]*>([\s\S]*?)<\/div>/g)]
+    .map((match) => [...match[1].matchAll(/src="([^"]+)"/g)].map((image) => image[1]));
+  assert.equal(sponsorGroups.length, 2);
+  assert.deepEqual(sponsorGroups[1], sponsorGroups[0]);
   for (let number = 1; number <= 5; number += 1) {
     const suffix = String(number).padStart(2, '0');
     assert.equal((await stat(resolve(root, `assets/images/sponsors/sponsor-placeholder-${suffix}.svg`))).isFile(), true);
@@ -206,13 +212,11 @@ test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local',
   assert.match(html, /id="sumate"/);
   assert.match(html, /data-sponsors-strip/);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-strip[^}]*animation:\s*sponsors-loop/s);
-  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-strip[^}]*gap:\s*0/s);
-  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsor-logo[^}]*margin-right:\s*\.8rem/s);
+  assert.match(css, /\.sponsors-group\[aria-hidden="true"\][^}]*display:\s*none/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsors-group, \.sponsors-group\[aria-hidden="true"\][^}]*display:\s*flex[^}]*flex:\s*0 0 auto[^}]*gap:\s*\.8rem[^}]*padding-right:\s*\.8rem/s);
   assert.match(css, /@keyframes sponsors-loop[^}]*translate3d\(0,0,0\)[\s\S]*?translate3d\(-50%,0,0\)/s);
   const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
-  assert.match(js, /querySelectorAll\('\[data-sponsor-clone\]'\).*remove\(\)/s);
-  assert.match(js, /cloneNode\(true\)/);
-  assert.match(js, /clone\.dataset\.sponsorClone/);
+  assert.doesNotMatch(js, /data-sponsor-clone|syncSponsorLoop|sponsorsStrip\.querySelectorAll/);
   assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.sponsor-logo[^}]*border:\s*0[^}]*background:\s*transparent/s);
 });
 
