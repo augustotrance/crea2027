@@ -107,6 +107,7 @@ test('el selector ESP–ENG traduce el sitio completo y conserva español por de
   assert.match(i18n, /\["No solo diseñamos,", "We don't just design,"\]/);
   assert.match(i18n, /\["Política de privacidad", "Privacy Policy"\]/);
   assert.match(i18n, /\["Acompañamiento estratégico para empresas", "Strategic Business Support"\]/);
+  assert.match(i18n, /\["¿Listo para dar el próximo salto\?", "Ready to take the next leap\?"\]/);
 
   for (const route of routes) {
     const html = await readFile(resolve(root, route), 'utf8');
@@ -146,6 +147,7 @@ test('el cursor, el menú móvil y la navegación secundaria son consistentes', 
       assert.ok(html.includes(`href="../#${section}"`), `${route}: ${section}`);
     }
     assert.doesNotMatch(html, /href="\.\.\/#(?:hero|sponsors)"/);
+    assert.match(html, /href="\.\.\/#portfolio">Proyectos<\/a><button class="nav-faq"[^>]*data-faq-open[^>]*>Preguntas frecuentes<\/button><a class="nav-cta" href="\.\.\/#contacto">Contacto/);
     assert.match(html, /href="\.\.\/#contacto">Contacto</);
   }
 });
@@ -162,8 +164,31 @@ test('la portada y la navegación respetan el nuevo orden institucional', async 
   const navigationPositions = navigationOrder.map((id) => navigation.indexOf(`href="#${id}"`));
   assert.ok(navigationPositions.every((position) => position >= 0));
   assert.deepEqual([...navigationPositions].sort((a, b) => a - b), navigationPositions);
-  assert.match(navigation, />Servicios<.*>Proceso<.*>Filosofía<.*>Casos<.*>Contacto</s);
+  assert.match(navigation, />Servicios<.*>Proceso<.*>Filosofía<.*>Proyectos<.*>Preguntas frecuentes<.*>Contacto</s);
   assert.doesNotMatch(navigation, />Estudio boutique<|>Sponsors<|>Formulario</);
+});
+
+test('preguntas frecuentes está disponible desde el header y el footer con diez respuestas bilingües', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
+  const js = await readFile(resolve(root, 'assets/js/main.js'), 'utf8');
+  const i18n = await readFile(resolve(root, 'assets/js/i18n.js'), 'utf8');
+  assert.equal((html.match(/data-faq-open/g) ?? []).length, 2);
+  assert.match(html, /<a href="#portfolio">Proyectos<\/a><button class="nav-faq"[^>]*data-faq-open[^>]*>Preguntas frecuentes<\/button><a class="nav-cta" href="#contacto">Contacto/);
+  assert.match(html, /href="#contacto">Formulario<\/a><button class="footer-faq-link"[^>]*data-faq-open[^>]*>Preguntas frecuentes<\/button>/);
+  const faqSource = js.match(/const faqItems = \[([\s\S]*?)\n\];/)?.[1] ?? '';
+  assert.equal((faqSource.match(/^\s*\[/gm) ?? []).length, 10);
+  assert.match(js, /faqDialog\.showModal\(\)/);
+  assert.match(js, /data-faq-close/);
+  assert.match(css, /\.faq-dialog\[open\][^}]*place-items:\s*center/s);
+  assert.match(i18n, /\["Preguntas frecuentes", "Frequently Asked Questions"\]/);
+  assert.match(i18n, /\["¿Ofrecen acompañamiento después de la entrega\?", "Do you offer support after delivery\?"\]/);
+
+  for (const route of routes.filter((route) => route !== '404.html')) {
+    const routeHtml = await readFile(resolve(root, route), 'utf8');
+    assert.ok(routeHtml.includes('class="nav-faq"'), route);
+    assert.ok(routeHtml.includes('aria-controls="faq-dialog"'), route);
+  }
 });
 
 test('sponsors y acceso a sumarse al equipo quedan listos para reemplazo local', async () => {
@@ -195,6 +220,8 @@ test('el acompañamiento estratégico aparece antes del contacto con sus tres se
   assert.match(css, /\.strategic-support::before[^}]*hero-poster\.jpg[^}]*cover/s);
   assert.match(css, /\.strategic-support::after[^}]*linear-gradient/s);
   assert.match(css, /\.strategic-support-card:hover[^}]*translateY\(-6px\)/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.strategic-support[^}]*hero-poster\.jpg[^}]*cover/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.strategic-support::before, \.strategic-support::after[^}]*display:\s*none/s);
 });
 
 test('servicios conserva las tarjetas web y usa selector de tres columnas solo en móvil', async () => {
@@ -225,5 +252,6 @@ test('los ajustes finales de casos, portada y contacto permanecen activos', asyn
   assert.doesNotMatch(css, /\.video-toggle|\.modal-case-link/);
   assert.doesNotMatch(js, /videoToggle|modal-case-link|\.route/);
   assert.match(html, /href="https:\/\/wa\.me\/5491127666507"/);
+  assert.match(html, /<h2 id="contact-title">¿Listo para dar el próximo salto\?<\/h2>/);
   assert.doesNotMatch(html, /5491151553302/);
 });

@@ -46,7 +46,7 @@ navToggle?.addEventListener('click', () => {
   setI18nText(navToggleLabel, open ? 'Cerrar menú' : 'Abrir menú');
   document.body.classList.toggle('nav-open', open);
 });
-nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
+nav?.querySelectorAll('a, [data-faq-open]').forEach((link) => link.addEventListener('click', closeNav));
 document.addEventListener('pointerdown', (event) => {
   if (!nav?.classList.contains('is-open') || !navToggle || !(event.target instanceof Node)) return;
   if (!nav.contains(event.target) && !navToggle.contains(event.target)) closeNav();
@@ -174,6 +174,89 @@ serviceDialog?.addEventListener('click', (event) => {
   if (event.target === serviceDialog) closeServiceDialog();
 });
 serviceDialog?.addEventListener('close', () => document.body.classList.remove('service-dialog-open'));
+
+const faqItems = [
+  ['¿Con qué tipo de empresas trabajan?', 'Trabajamos con marcas, emprendimientos y equipos que buscan construir, ordenar o escalar su identidad y comunicación.'],
+  ['¿Qué servicios puedo contratar?', 'Podés contratar branding, estrategia de contenidos, social media, diseño y desarrollo web, dirección de arte, infraestructura digital y acompañamiento estratégico.'],
+  ['¿Puedo contratar un servicio puntual?', 'Sí. Evaluamos proyectos integrales y necesidades específicas, siempre que podamos aportar un resultado sólido y coherente.'],
+  ['¿Cómo comienza un proyecto?', 'Comenzamos con una conversación de diagnóstico para comprender objetivos, contexto, alcance, tiempos y prioridades.'],
+  ['¿Cuánto tiempo demora un proyecto?', 'Depende del alcance. Después del diagnóstico presentamos un cronograma claro con etapas, entregables y fechas estimadas.'],
+  ['¿Cómo se define el presupuesto?', 'El presupuesto se construye según alcance, complejidad, tiempos y recursos necesarios. Cada propuesta detalla qué incluye.'],
+  ['¿Cuántas revisiones están incluidas?', 'La cantidad se establece en la propuesta. Organizamos cada instancia para consolidar decisiones y evitar ciclos innecesarios.'],
+  ['¿Trabajan con clientes de otros países?', 'Sí. Nuestro proceso es remoto y está preparado para trabajar con equipos y marcas de cualquier ubicación.'],
+  ['¿Qué necesitan de nuestro equipo?', 'Necesitamos un referente disponible, información relevante y devoluciones claras en los momentos acordados.'],
+  ['¿Ofrecen acompañamiento después de la entrega?', 'Sí. Podemos continuar con implementación, soporte, evolución de marca, contenidos y acompañamiento estratégico.']
+];
+
+const createFaqDialog = () => {
+  if (!document.querySelector('[data-faq-open]')) return null;
+
+  const dialog = document.createElement('dialog');
+  dialog.className = 'faq-dialog';
+  dialog.id = 'faq-dialog';
+  dialog.setAttribute('aria-labelledby', 'faq-dialog-title');
+
+  const card = document.createElement('div');
+  card.className = 'faq-dialog-card';
+  const close = document.createElement('button');
+  close.className = 'faq-dialog-close';
+  close.type = 'button';
+  close.dataset.faqClose = '';
+  setI18nAttribute(close, 'aria-label', 'Cerrar preguntas frecuentes');
+  close.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
+
+  const header = document.createElement('header');
+  header.className = 'faq-dialog-header';
+  const eyebrow = document.createElement('span');
+  eyebrow.className = 'section-eyebrow';
+  setI18nText(eyebrow, 'Preguntas frecuentes');
+  const title = document.createElement('h2');
+  title.id = 'faq-dialog-title';
+  setI18nText(title, 'Antes de empezar');
+  const intro = document.createElement('p');
+  setI18nText(intro, 'Respuestas claras antes de empezar a trabajar juntos.');
+  header.append(eyebrow, title, intro);
+
+  const list = document.createElement('div');
+  list.className = 'faq-list';
+  faqItems.forEach(([question, answer]) => {
+    const item = document.createElement('details');
+    item.className = 'faq-item';
+    const summary = document.createElement('summary');
+    setI18nText(summary, question);
+    const content = document.createElement('p');
+    setI18nText(content, answer);
+    item.append(summary, content);
+    list.append(item);
+  });
+
+  card.append(close, header, list);
+  dialog.append(card);
+  document.body.append(dialog);
+  return dialog;
+};
+
+const faqDialog = createFaqDialog();
+const closeFaqDialog = () => {
+  if (faqDialog?.open) faqDialog.close();
+};
+
+document.querySelectorAll('[data-faq-open]').forEach((trigger) => {
+  trigger.addEventListener('click', () => {
+    if (!faqDialog || faqDialog.open) return;
+    faqDialog.showModal();
+    if (customCursor) faqDialog.append(customCursor);
+    document.body.classList.add('faq-dialog-open');
+  });
+});
+faqDialog?.querySelector('[data-faq-close]')?.addEventListener('click', closeFaqDialog);
+faqDialog?.addEventListener('click', (event) => {
+  if (event.target === faqDialog) closeFaqDialog();
+});
+faqDialog?.addEventListener('close', () => {
+  if (customCursor) document.body.append(customCursor);
+  document.body.classList.remove('faq-dialog-open');
+});
 
 const projects = {
   'beauty-premium': {

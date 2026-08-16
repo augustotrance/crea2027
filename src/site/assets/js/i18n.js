@@ -140,8 +140,7 @@ const translations = new Map([
   ["Todo lo necesario para sacar el máximo potencial al proyecto.", "Everything needed to unlock the project's full potential."],
 
   // Contacto y pie
-  ["¿Listo para el próximo", "Ready for your next"],
-  ["salto visual?", "visual leap?"],
+  ["¿Listo para dar el próximo salto?", "Ready to take the next leap?"],
   ["Cuéntanos en una frase qué quieres lograr. El resto es nuestra parte.", "Tell us in one sentence what you want to achieve. We'll take care of the rest."],
   ["Nombre", "Name"],
   ["Tu nombre completo", "Your full name"],
@@ -170,6 +169,32 @@ const translations = new Map([
   ["¿Sos diseñador, developer o creativo? Enviános tu portfolio y contanos por qué te gustaría sumarte a nuestro equipo.", "Are you a designer, developer, or creative? Send us your portfolio and tell us why you'd like to join our team."],
   ["Enviar correo", "Send email"],
   ["CREA Design Studio. Todos los derechos reservados.", "CREA Design Studio. All rights reserved."],
+
+  // Preguntas frecuentes
+  ["Preguntas frecuentes", "Frequently Asked Questions"],
+  ["Cerrar preguntas frecuentes", "Close frequently asked questions"],
+  ["Antes de empezar", "Before We Begin"],
+  ["Respuestas claras antes de empezar a trabajar juntos.", "Clear answers before we start working together."],
+  ["¿Con qué tipo de empresas trabajan?", "What types of companies do you work with?"],
+  ["Trabajamos con marcas, emprendimientos y equipos que buscan construir, ordenar o escalar su identidad y comunicación.", "We work with brands, startups, and teams looking to build, organize, or scale their identity and communications."],
+  ["¿Qué servicios puedo contratar?", "What services can I hire you for?"],
+  ["Podés contratar branding, estrategia de contenidos, social media, diseño y desarrollo web, dirección de arte, infraestructura digital y acompañamiento estratégico.", "You can hire us for branding, content strategy, social media, web design and development, art direction, digital infrastructure, and strategic support."],
+  ["¿Puedo contratar un servicio puntual?", "Can I hire you for a one-off service?"],
+  ["Sí. Evaluamos proyectos integrales y necesidades específicas, siempre que podamos aportar un resultado sólido y coherente.", "Yes. We consider both comprehensive projects and specific needs, as long as we can deliver a solid, coherent result."],
+  ["¿Cómo comienza un proyecto?", "How does a project begin?"],
+  ["Comenzamos con una conversación de diagnóstico para comprender objetivos, contexto, alcance, tiempos y prioridades.", "We begin with a discovery conversation to understand your objectives, context, scope, timeline, and priorities."],
+  ["¿Cuánto tiempo demora un proyecto?", "How long does a project take?"],
+  ["Depende del alcance. Después del diagnóstico presentamos un cronograma claro con etapas, entregables y fechas estimadas.", "It depends on scope. After discovery, we present a clear timeline with phases, deliverables, and estimated dates."],
+  ["¿Cómo se define el presupuesto?", "How is the budget determined?"],
+  ["El presupuesto se construye según alcance, complejidad, tiempos y recursos necesarios. Cada propuesta detalla qué incluye.", "The budget is based on scope, complexity, timeline, and required resources. Each proposal details what is included."],
+  ["¿Cuántas revisiones están incluidas?", "How many revision rounds are included?"],
+  ["La cantidad se establece en la propuesta. Organizamos cada instancia para consolidar decisiones y evitar ciclos innecesarios.", "The number is defined in the proposal. We structure each round to consolidate decisions and avoid unnecessary cycles."],
+  ["¿Trabajan con clientes de otros países?", "Do you work with clients in other countries?"],
+  ["Sí. Nuestro proceso es remoto y está preparado para trabajar con equipos y marcas de cualquier ubicación.", "Yes. Our process is remote and designed to work with teams and brands anywhere."],
+  ["¿Qué necesitan de nuestro equipo?", "What do you need from our team?"],
+  ["Necesitamos un referente disponible, información relevante y devoluciones claras en los momentos acordados.", "We need an available point of contact, relevant information, and clear feedback at the agreed stages."],
+  ["¿Ofrecen acompañamiento después de la entrega?", "Do you offer support after delivery?"],
+  ["Sí. Podemos continuar con implementación, soporte, evolución de marca, contenidos y acompañamiento estratégico.", "Yes. We can continue with implementation, support, brand evolution, content, and strategic guidance."],
 
   // Modal y páginas de casos
   ["Cerrar proyecto", "Close project"],
