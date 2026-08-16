@@ -65,6 +65,23 @@ test('las galerías preservan las proporciones naturales', async () => {
   assert.doesNotMatch(css, /\.(?:project-hero|case-cover) img[^}]*max-height/s);
 });
 
+test('las seis galerías usan un mosaico fluido sin filas desiguales', async () => {
+  const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
+  assert.match(css, /\.gallery-grid[^}]*columns:\s*2/s);
+  assert.match(css, /\.gallery-item[^}]*break-inside:\s*avoid/s);
+  assert.match(css, /\.case-gallery[^}]*columns:\s*2/s);
+  assert.match(css, /\.case-gallery figure[^}]*break-inside:\s*avoid/s);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.gallery-grid[^}]*columns:\s*1/);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*?\.case-gallery[^}]*columns:\s*1/);
+  assert.doesNotMatch(css, /\.(?:gallery-grid|case-gallery)[^{]*\{[^}]*grid-template-columns/s);
+
+  for (const route of routes.filter((route) => route.startsWith('casos/'))) {
+    const html = await readFile(resolve(root, route), 'utf8');
+    assert.equal((html.match(/class="case-gallery"/g) ?? []).length, 1, route);
+    assert.ok((html.match(/<figure>/g) ?? []).length >= 4, route);
+  }
+});
+
 test('las correcciones solicitadas permanecen activas en escritorio y móvil', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
   const css = await readFile(resolve(root, 'assets/css/styles.css'), 'utf8');
